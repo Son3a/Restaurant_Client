@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_home"
+        android:title="Giới thiệu"
+        android:icon="@drawable/ic_home"
+        />
+
+    <item
+        android:id="@+id/menu_booking"
+        android:title="Đặt bàn"
+        android:icon="@drawable/ic_order" />
+
+    <item
+        android:title=""/>
+
+    <item
+        android:id="@+id/menu_order"
+        android:title="Đặt món"
+        android:icon="@drawable/ic_order_food" />
+    <item
+        android:id="@+id/menu_account"
+        android:title="Tài khoản"
+        android:icon="@drawable/ic_account" />
+
+</menu>

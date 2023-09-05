@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Restaurant</string>
+    <string name="info_desc_restaurant_1">Được biết đến với thiết kế độc đáo, The Log bắt đầu với ý tưởng về một ngôi nhà gỗ trên cây, tách biệt khỏi nhịp sống hối hả của thành phố Sài Gòn, mang đến cho thực khách một không gian thư giãn và thoải mái. Mỗi món ăn tại nhà hàng đều là một tác phẩm nghệ thuật, thể hiện tâm huyết và sự sáng tạo của người đầu bếp. Bạn sẽ thích thú khi thưởng thức những món ăn tinh tế từ hương vị đến hình thức bên ngoài tại đây.</string>
+    <string name="info_desc_restaurant_2">Nhà hàng 5 sao quận 13 này có thực đơn bao gồm a la carte và buffet. Với buffet, bạn sẽ “choáng ngợp” với những món hải sản tươi ngon và vô số món bánh hấp dẫn. Hải sản tươi ngon, chấm với nước sốt cay cay và mù tạt sẽ khiến bạn mê mẩn ngay lập tức</string>
+    <string name="address">71 Nguyễn Sơn Bá, phường 13, Quận 13, HCM</string>
+    <string name="phone_number">0123456789</string>
+</resources>

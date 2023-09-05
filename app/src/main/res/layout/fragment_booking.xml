@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:animateLayoutChanges="true"
+    android:paddingBottom="20dp">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/layoutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:backgroundTint="@color/white"
+        app:cardElevation="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/white">
+
+            <ImageButton
+                android:id="@+id/imageBack"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15dp"
+                android:background="@null"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Thông tin đặt bàn"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/layoutNested"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutHeader">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textTitleTime"
+                style="@style/text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:text="Thời gian đặt bàn"
+                android:textColor="@color/black" />
+
+            <RelativeLayout
+                android:id="@+id/layoutTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textTitleTime"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textDateBooking"
+                    style="@style/text_content"
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:background="@drawable/background_booking"
+                    android:drawableLeft="@drawable/ic_calenda"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="30dp"
+                    android:text="19 tháng 7" />
+
+                <TextView
+                    android:id="@+id/textTimeBooking"
+                    style="@style/text_content"
+                    android:layout_width="180dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/background_booking"
+                    android:drawableLeft="@drawable/ic_time"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="40dp"
+                    android:text="12:00" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textTitleAmount"
+                style="@style/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/layoutTime"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:drawableRight="@drawable/ic_required"
+                android:drawablePadding="3dp"
+                android:drawableTint="@color/red"
+                android:text="Số lượng người"
+                android:textColor="@color/black" />
+
+
+            <TextView
+                android:id="@+id/textAmount"
+                style="@style/text_content"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/textTitleAmount"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/background_booking"
+                android:drawableLeft="@drawable/ic_amount"
+                android:drawableRight="@drawable/ic_expend"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="Số lượng người" />
+
+            <TextView
+                android:id="@+id/textTitleName"
+                style="@style/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textAmount"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:drawableRight="@drawable/ic_required"
+                android:drawablePadding="3dp"
+                android:drawableTint="@color/red"
+                android:text="Họ Tên"
+                android:textColor="@color/black" />
+
+
+            <EditText
+                android:id="@+id/textName"
+                style="@style/text_content"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/textTitleName"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/background_booking"
+                android:drawableLeft="@drawable/ic_person"
+                android:drawablePadding="10dp"
+                android:enabled="false"
+                android:gravity="center_vertical"
+                android:inputType="textCapSentences"
+                android:paddingLeft="20dp"
+                android:text="NGUYỄN SƠN BÁ" />
+
+            <TextView
+                android:id="@+id/textTitlePhone"
+                style="@style/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textName"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:drawableRight="@drawable/ic_required"
+                android:drawablePadding="3dp"
+                android:drawableTint="@color/red"
+                android:text="Số điện thoại"
+                android:textColor="@color/black" />
+
+
+            <EditText
+                android:id="@+id/textPhone"
+                style="@style/text_content"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/textTitlePhone"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/background_booking"
+                android:drawableLeft="@drawable/ic_phone_number"
+                android:drawablePadding="10dp"
+                android:enabled="false"
+                android:gravity="center_vertical"
+                android:inputType="number"
+                android:paddingLeft="20dp"
+                android:text="0123456789" />
+
+            <TextView
+                android:id="@+id/textTitleEmail"
+                style="@style/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textPhone"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:drawableRight="@drawable/ic_required"
+                android:drawablePadding="3dp"
+                android:drawableTint="@color/red"
+                android:text="Email"
+                android:textColor="@color/black" />
+
+
+            <EditText
+                android:id="@+id/textEmail"
+                style="@style/text_content"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/textTitleEmail"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/background_booking"
+                android:drawableLeft="@drawable/ic_mail"
+                android:drawablePadding="10dp"
+                android:enabled="false"
+                android:gravity="center_vertical"
+                android:inputType="number"
+                android:paddingLeft="20dp"
+                android:text="sonba7b1@gmail.com" />
+
+            <TextView
+                android:id="@+id/textTitleNote"
+                style="@style/text_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textEmail"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
+                android:text="Ghi chú (Nếu có)"
+                android:textColor="@color/black" />
+
+
+            <EditText
+                android:id="@+id/textNote"
+                style="@style/text_title"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/textTitleNote"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/background_booking"
+                android:drawableLeft="@drawable/ic_note"
+                android:drawablePadding="10dp"
+                android:gravity="center_vertical"
+                android:hint="Nhập ghi chú"
+                android:inputType="text"
+                android:paddingLeft="20dp" />
+
+            <Button
+                android:id="@+id/buttonBooking"
+                style="@style/text_content"
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/textNote"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:backgroundTint="@color/orange"
+                android:text="Đặt bàn ngay"
+                android:textColor="@color/white"
+                app:cornerRadius="20dp" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/pbLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+</RelativeLayout>

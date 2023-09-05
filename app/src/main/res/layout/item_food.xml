@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/background_food"
+    android:padding="10dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvImageFood"
+        android:layout_width="120dp"
+        android:layout_height="90dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageFood"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:scaleType="centerCrop" />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/textNameFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="Món ăn"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@id/cvImageFood"
+        app:layout_constraintTop_toTopOf="@id/cvImageFood" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutPriceSales"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/textPrice"
+        app:layout_constraintStart_toStartOf="@id/textNameFood"
+        app:layout_constraintTop_toTopOf="@id/textPrice"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textPriceSales"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30.000đ"
+            android:textColor="@color/text"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@color/text"
+            app:layout_constraintBottom_toBottomOf="@id/textPriceSales"
+            app:layout_constraintEnd_toEndOf="@id/textPriceSales"
+            app:layout_constraintStart_toStartOf="@id/textPriceSales"
+            app:layout_constraintTop_toTopOf="@id/textPriceSales" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <TextView
+        android:id="@+id/textPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:text="200.000đ"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/layoutPriceSales" />
+
+    <FrameLayout
+        android:id="@+id/layoutSaleoff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/cvImageFood"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageSaleOff"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/ic_sale_off"
+            android:backgroundTint="@color/red"
+            android:scaleType="centerCrop"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/textSaleOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:rotation="-45"
+            android:text="-50%"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:animateLayoutChanges="true"
+    tools:context=".activity.OrderFoodActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/background_vnd"
+            android:padding="15dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvAvatar"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="50dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageAvatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/avatar" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/textNameRestaurant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Nhà hàng BaLi"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cvAvatar" />
+
+            <RelativeLayout
+                android:id="@+id/layoutTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textNameRestaurant">
+
+                <View
+                    android:id="@+id/layoutLine"
+                    android:layout_width="1dp"
+                    android:layout_height="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_toRightOf="@+id/textDate"
+                    android:background="@color/black" />
+
+                <TextView
+                    android:id="@+id/textDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="25 thg 7, 2023"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/textTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/layoutLine"
+                    android:text="00:00"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textTitleDeposit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:text="Thanh toán thành công"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layoutTime" />
+
+            <TextView
+                android:id="@+id/textDeposit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="0 vnd"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textTitleDeposit" />
+
+            <TextView
+                android:id="@+id/textTitleTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bàn"
+                android:textColor="@color/black"
+                android:layout_marginTop="30dp"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@+id/textDeposit" />
+
+            <TextView
+                android:id="@+id/textTable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B01"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/recycleListFoods"
+                app:layout_constraintTop_toTopOf="@+id/textTitleTable" />
+
+            <TextView
+                android:id="@+id/textTitleTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ngày đến"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@+id/textTable" />
+
+            <TextView
+                android:id="@+id/textTimeComing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="16:30 26 thg 7, 2023"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@+id/textTable" />
+
+            <View
+                android:id="@+id/layoutLine3"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/text"
+                app:layout_constraintEnd_toEndOf="@id/recycleListFoods"
+                app:layout_constraintStart_toStartOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@id/textTitleTime" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleListFoods"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layoutLine3" />
+
+            <View
+                android:id="@+id/layoutLine1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/text"
+                app:layout_constraintEnd_toEndOf="@id/recycleListFoods"
+                app:layout_constraintStart_toStartOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@id/recycleListFoods" />
+
+            <TextView
+                android:id="@+id/textTitleTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Tổng cộng"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@id/layoutLine1" />
+
+            <TextView
+                android:id="@+id/textTitleDeposit1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Cọc"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@id/textTitleTotal" />
+
+            <TextView
+                android:id="@+id/textTitleRest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Còn lại"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@id/textTitleDeposit1" />
+
+            <TextView
+                android:id="@+id/textTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Tổng cộng"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@id/layoutLine1" />
+
+            <TextView
+                android:id="@+id/textDeposit1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Cọc"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@id/textTitleTotal" />
+
+            <TextView
+                android:id="@+id/textRest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Còn lại"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@id/recycleListFoods"
+                app:layout_constraintTop_toBottomOf="@id/textDeposit1" />
+
+            <View
+                android:id="@+id/layoutLine2"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_dotted_line_horizontal"
+                android:layerType="software"
+                app:layout_constraintEnd_toEndOf="@id/recycleListFoods"
+                app:layout_constraintStart_toStartOf="@id/recycleListFoods"
+
+                app:layout_constraintTop_toBottomOf="@id/textRest" />
+
+            <TextView
+                android:id="@+id/textThanks"
+                style="@style/text_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="CẢM ƠN QUÍ KHÁCH!"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                app:layout_constraintTop_toBottomOf="@id/layoutLine2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonBack"
+            style="@style/text_content"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginBottom="15dp"
+            android:backgroundTint="@color/orange"
+            android:text="Trở về"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:cornerRadius="20dp"
+            app:layout_constraintTop_toBottomOf="@id/layoutContent"
+            tools:layout_editor_absoluteX="13dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
+
