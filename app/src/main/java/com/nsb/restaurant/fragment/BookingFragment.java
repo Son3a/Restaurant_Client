@@ -66,7 +66,6 @@ public class BookingFragment extends Fragment {
     private EditText textNameClient, textPhone, textMail, textNote, textAmountPeople;
     private ImageButton buttonCloseBottom;
     private NestedScrollView layoutNested;
-    private BookingInterface listener;
     private RadioGroup radioGroup1, radioGroup2;
     private String amountPeople;
     private Button buttonBooking, buttonAmount;
@@ -79,10 +78,6 @@ public class BookingFragment extends Fragment {
     public static String stringNote;
     public static String nameTable = "";
     PreferenceManager preferenceManager;
-
-    public interface BookingInterface {
-        void setVisibleAppBar(Boolean isUp);
-    }
 
     @Nullable
     @Override
@@ -126,7 +121,6 @@ public class BookingFragment extends Fragment {
         textMail.setText(preferenceManager.getString(Constant.EMAIL));
         openBottomSheetAmountPeople();
         closeBottomSheet();
-        setVisibleBottomAppbar();
         setRadioGroup();
         pickDate();
         pickTime();
@@ -339,18 +333,6 @@ public class BookingFragment extends Fragment {
 
     }
 
-    private void setVisibleBottomAppbar() {
-        layoutNested.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY < oldScrollY) {
-                //Up
-                listener.setVisibleAppBar(true);
-            } else if (scrollY > oldScrollY) {
-                //Down
-                listener.setVisibleAppBar(false);
-            }
-        });
-    }
-
     private void amountClick() {
         buttonAmount.setOnClickListener(v -> {
             if (textAmountPeople != null && !textAmountPeople.equals("")) {
@@ -393,23 +375,5 @@ public class BookingFragment extends Fragment {
             }
 
         });
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof BookingInterface) {
-            //init the listener
-            listener = (BookingInterface) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement InteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
     }
 }

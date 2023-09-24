@@ -4,25 +4,25 @@
 
     <item
         android:id="@+id/menu_home"
-        android:title="Giới thiệu"
-        android:icon="@drawable/ic_home"
-        />
+        android:icon="@drawable/custom_icon_home"
+        android:title="Giới thiệu" />
 
     <item
         android:id="@+id/menu_booking"
-        android:title="Đặt bàn"
-        android:icon="@drawable/ic_order" />
+        android:icon="@drawable/custom_icon_order"
+        android:title="Đặt bàn" />
 
     <item
-        android:title=""/>
+        android:id="@+id/menu_qrcode"
+        android:title="" />
 
     <item
         android:id="@+id/menu_order"
-        android:title="Đặt món"
-        android:icon="@drawable/ic_order_food" />
+        android:icon="@drawable/ic_order_food"
+        android:title="Đặt món" />
     <item
         android:id="@+id/menu_account"
-        android:title="Tài khoản"
-        android:icon="@drawable/ic_account" />
+        android:icon="@drawable/custom_icon_account"
+        android:title="Tài khoản" />
 
 </menu>

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -44,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
         }
-
 
         gotoSignUp();
         forgotPassword();
@@ -130,9 +130,8 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("Error", e.getMessage());
                     binding.buttonLogin.setVisibility(View.VISIBLE);
                     binding.pbLoading.setVisibility(View.INVISIBLE);
-                    Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -164,10 +163,10 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void retry(VolleyError error) {
-
+                Log.d("Error", error.toString());
                 binding.buttonLogin.setVisibility(View.VISIBLE);
                 binding.pbLoading.setVisibility(View.INVISIBLE);
-                Toast.makeText(LoginActivity.this, "Email hoặc password không đúng!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LoginActivity.this, "Email hoặc password không đúng!", Toast.LENGTH_SHORT).show();
             }
         });
         queue.add(sr);

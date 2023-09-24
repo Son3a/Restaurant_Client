@@ -1,6 +1,8 @@
 package com.nsb.restaurant.model;
 
-public class FoodModel {
+import java.io.Serializable;
+
+public class FoodModel implements Serializable {
     String id, name, price, image;
     int numOfFood;
     String saleOff, priceSaleOff;

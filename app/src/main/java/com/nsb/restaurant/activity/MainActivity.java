@@ -22,10 +22,7 @@ import com.nsb.restaurant.listener.ListenFromFragment;
 import com.nsb.restaurant.util.Constant;
 
 
-public class MainActivity extends AppCompatActivity implements
-        MenuFragment.MenuInterface,
-        OverviewFragment.OverviewInterface,
-        BookingFragment.BookingInterface {
+public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private InfoRestaurantFragment infoFragment;
@@ -86,16 +83,5 @@ public class MainActivity extends AppCompatActivity implements
                 return false;
             }
         });
-    }
-
-    @Override
-    public void setVisibleAppBar(Boolean isUp) {
-        if (isUp == false) {
-            binding.fab.setVisibility(View.INVISIBLE);
-            binding.bottomAppBar.setVisibility(View.INVISIBLE);
-        } else {
-            binding.fab.setVisibility(View.VISIBLE);
-            binding.bottomAppBar.setVisibility(View.VISIBLE);
-        }
     }
 }
