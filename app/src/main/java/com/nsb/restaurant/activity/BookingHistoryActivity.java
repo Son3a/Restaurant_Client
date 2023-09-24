@@ -71,12 +71,12 @@ public class BookingHistoryActivity extends AppCompatActivity implements Booking
     }
 
     private void gotoBooking(){
-        binding.buttonBooking.setOnClickListener(v->{
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(Constant.IS_BOOKING, true);
-            startActivity(intent);
-        });
+//        binding.buttonBooking.setOnClickListener(v->{
+//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            intent.putExtra(Constant.IS_BOOKING, true);
+//            startActivity(intent);
+//        });
     }
 
     private void back() {
@@ -123,10 +123,10 @@ public class BookingHistoryActivity extends AppCompatActivity implements Booking
                     binding.layoutRefresh.setRefreshing(false);
                     if (bookingModelList.size() == 0) {
                         binding.textEmpty.setVisibility(View.VISIBLE);
-                        binding.buttonBooking.setVisibility(View.VISIBLE);
+                        //binding.buttonBooking.setVisibility(View.VISIBLE);
                     } else {
                         binding.textEmpty.setVisibility(View.GONE);
-                        binding.buttonBooking.setVisibility(View.GONE);
+                        //binding.buttonBooking.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
