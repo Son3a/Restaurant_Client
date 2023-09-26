@@ -64,9 +64,9 @@ public class OverviewFragment extends Fragment {
 
     private void init() {
         textHotLine = overviewFragment.findViewById(R.id.textHotLine);
-        recyclerViewSaleOff = overviewFragment.findViewById(R.id.recycleViewSaleOff);
-        layoutNested = overviewFragment.findViewById(R.id.layoutContent);
-        recycleViewTopFood = overviewFragment.findViewById(R.id.recycleViewTopFood);
+        //recyclerViewSaleOff = overviewFragment.findViewById(R.id.recycleViewSaleOff);
+        //layoutNested = overviewFragment.findViewById(R.id.layoutContent);
+       // recycleViewTopFood = overviewFragment.findViewById(R.id.recycleViewTopFood);
         foodModelList = new ArrayList<>();
         saleModelList = new ArrayList<>();
     }

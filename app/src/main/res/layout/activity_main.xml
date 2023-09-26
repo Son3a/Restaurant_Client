@@ -25,7 +25,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:backgroundTint="@color/teal"
+        android:backgroundTint="@color/primary"
         android:translationZ="100dp"
         app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="@id/bottomNavigationView"
@@ -46,11 +46,10 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
-        app:itemIconTint="@color/black"
+        app:itemIconTint="@color/primary"
         app:itemTextColor="@color/custom_text_bottom_menu"
         app:labelVisibilityMode="labeled"
         app:itemIconSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:menu="@menu/bottom_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

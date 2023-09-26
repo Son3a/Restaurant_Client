@@ -41,13 +41,13 @@
         app:layout_constraintBottom_toBottomOf="@id/textPrice"
         app:layout_constraintStart_toStartOf="@id/textNameFood"
         app:layout_constraintTop_toTopOf="@id/textPrice"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/textPriceSales"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="30.000đ"
+            android:text="300.000đ"
             android:textColor="@color/text"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +82,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/cvImageFood"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/imageSaleOff"

@@ -1,6 +1,10 @@
 package com.nsb.restaurant.util;
 
+import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -10,7 +14,7 @@ import java.text.SimpleDateFormat;
 
 public class Constant {
     public static final String URL_DEV = "https://restaurant-server-ba.onrender.com/api/v1";
-    //public static final String URL_DEV = "http://192.168.137.1:5000/api/v1";
+    public static final String URL_LOCAL = "http://localhost:5000/api/v1";
     public static final String CLIENT_ID = "AZCGqVmSdvQe2VYD5APynpWfuU2xwBUg0WrNL10suXeeENCgbYI5ea3THozfZISdVENXgVyo6z3SV59B";
     public static final String CLIENT_SECRET = "EGrLhcp6-RDJQzX7FDln8bACmDdm4skzeEu4uptYk0zv1cx6pACNFqIZ3WX3tWboGZpwSgF_qk5yKG2L";
     public static final String WAITING_BOOKING_TABLE = "Chờ duyệt";
@@ -36,6 +40,7 @@ public class Constant {
     public static final String PHONE_NUM = "phoneNum";
     public static final String AVATAR = "avatar";
     public static final String IS_BOOKING = "isBooking";
+    public static final String FOOD_MODEL = "foodModel";
 
     public static String formatSalary(String salary) {
         Log.d("Sla", salary);
@@ -66,5 +71,10 @@ public class Constant {
             e.printStackTrace();
         }
         return newTime;
+    }
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

@@ -8,18 +8,19 @@
         android:title="Giới thiệu" />
 
     <item
-        android:id="@+id/menu_booking"
+        android:id="@+id/menu_food"
         android:icon="@drawable/custom_icon_order"
-        android:title="Đặt bàn" />
+        android:title="Thực đơn" />
 
     <item
         android:id="@+id/menu_qrcode"
         android:title="" />
 
     <item
-        android:id="@+id/menu_order"
-        android:icon="@drawable/ic_order_food"
-        android:title="Đặt món" />
+        android:id="@+id/menu_booking"
+        android:icon="@drawable/custom_icon_order"
+        android:title="Đặt bàn" />
+
     <item
         android:id="@+id/menu_account"
         android:icon="@drawable/custom_icon_account"

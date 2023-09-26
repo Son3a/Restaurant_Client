@@ -2,10 +2,13 @@ package com.nsb.restaurant.fragment;
 
 import static java.lang.Math.abs;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,15 +27,7 @@ public class InfoRestaurantFragment extends Fragment {
     private View infoRestaurantView;
     private AppBarLayout appBar;
     private Toolbar toolbar;
-    private ViewPager2 viewPager2;
-    private TabLayout tabLayout;
-    private ViewPagerInfoAdapter viewPagerInfoAdapter;
-//    private InfoRestaurantListener listener;
-
-//    public interface InfoRestaurantListener{
-//        void onScroll(Boolean isDown);
-//    }
-
+    private TextView textHotLine;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,28 +50,16 @@ public class InfoRestaurantFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabLayout = infoRestaurantView.findViewById(R.id.tabs);
-        viewPager2 = infoRestaurantView.findViewById(R.id.viewPager);
-
-        initViewPager2();
-        initTabLayout();
-
-        setTabLayout();
-        setViewPager2();
     }
 
     private void setEvent() {
-
+        call();
     }
 
     private void init(){
+        textHotLine = infoRestaurantView.findViewById(R.id.textHotLine);
         appBar = infoRestaurantView.findViewById(R.id.appBar);
         toolbar = infoRestaurantView.findViewById(R.id.toolBar);
-    }
-
-    private void initTabLayout(){
-        tabLayout.addTab(tabLayout.newTab().setText("Tổng quan"));
-        tabLayout.addTab(tabLayout.newTab().setText("Thực đơn"));
     }
 
     private void setStateAppBar() {
@@ -91,39 +74,12 @@ public class InfoRestaurantFragment extends Fragment {
         });
     }
 
-    private void initViewPager2(){
-        FragmentManager fragmentManager = getChildFragmentManager();
-        viewPagerInfoAdapter = new ViewPagerInfoAdapter(fragmentManager , getLifecycle());
-        viewPager2.setAdapter(viewPagerInfoAdapter);
-    }
+    private void call() {
+        textHotLine.setOnClickListener(v -> {
+            String phone = textHotLine.getText().toString();
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
+            startActivity(intent);
 
-    private void setViewPager2(){
-        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                tabLayout.selectTab(tabLayout.getTabAt(position));
-            }
-        });
-        viewPager2.setUserInputEnabled(false);
-        viewPager2.setSaveEnabled(false);
-    }
-
-    private void setTabLayout(){
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager2.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
         });
     }
 

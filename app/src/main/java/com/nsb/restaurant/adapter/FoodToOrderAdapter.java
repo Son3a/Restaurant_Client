@@ -4,6 +4,7 @@ import static com.nsb.restaurant.util.Constant.formatSalary;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -65,6 +66,14 @@ public class FoodToOrderAdapter extends RecyclerView.Adapter<FoodToOrderAdapter.
             binding.getRoot().setOnClickListener(v->{
                 listener.onClickFood(foodModel);
             });
+            if (!foodModel.getSaleOff().equals("")) {
+                int priceCurrent = Integer.parseInt(foodModel.getPrice()) - Integer.parseInt(foodModel.getPriceSaleOff());
+                binding.textSaleOff.setText("-" + foodModel.getSaleOff() + "%");
+                binding.textPriceSaleOff.setText(formatSalary(foodModel.getPrice()) + "đ");
+                binding.textPrice.setText(formatSalary(String.valueOf(priceCurrent)) + "đ");
+                binding.layoutSaleOff.setVisibility(View.VISIBLE);
+                binding.layoutPriceSaleOff.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

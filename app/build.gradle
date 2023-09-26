@@ -87,4 +87,10 @@ dependencies {
     implementation 'com.cloudinary:cloudinary-android:2.3.1'
 
     implementation 'me.relex:circleindicator:2.1.6'
+
+    //loading animation
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    //qr code
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
 }

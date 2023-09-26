@@ -13,7 +13,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.button.MaterialButton;
 import com.nsb.restaurant.R;
 import com.nsb.restaurant.activity.BookingHistoryActivity;
 import com.nsb.restaurant.activity.ChangeInfoActivity;
@@ -27,11 +30,11 @@ import com.squareup.picasso.Picasso;
 
 public class AccountFragment extends Fragment {
     private View accountView;
-    private TextView textProfile, textPaymentHistory, textBookingHistory, textLogout, textChangePW, textName;
+    private TextView textPaymentHistory, textBookingHistory, textChangePW, textName;
     private ImageView imageAvatar;
     private PreferenceManager preferenceManager;
-    private ProgressBar pbLoadingImage;
-
+    private ConstraintLayout layoutInfo;
+    private MaterialButton buttonLogout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,15 +47,14 @@ public class AccountFragment extends Fragment {
     }
 
     private void init() {
-        pbLoadingImage = accountView.findViewById(R.id.pbLoadingImage);
-        textProfile = accountView.findViewById(R.id.textProfile);
         textPaymentHistory = accountView.findViewById(R.id.textPaymentHistory);
         textBookingHistory = accountView.findViewById(R.id.textBookingHistory);
-        textLogout = accountView.findViewById(R.id.textLogout);
         textChangePW = accountView.findViewById(R.id.textUpdatePassword);
         preferenceManager = new PreferenceManager(getActivity());
         textName = accountView.findViewById(R.id.textName);
         imageAvatar = accountView.findViewById(R.id.imageAvatar);
+        layoutInfo = accountView.findViewById(R.id.layoutInfo);
+        buttonLogout = accountView.findViewById(R.id.buttonLogout);
     }
 
     private void setEvent() {
@@ -67,22 +69,12 @@ public class AccountFragment extends Fragment {
     private void loading() {
         textName.setText(preferenceManager.getString(Constant.USER_NAME));
         if (preferenceManager.getString(Constant.AVATAR) != null && !preferenceManager.getString(Constant.AVATAR).equals("")) {
-            Picasso.get().load(preferenceManager.getString(Constant.AVATAR)).into(imageAvatar, new Callback() {
-                @Override
-                public void onSuccess() {
-                    pbLoadingImage.setVisibility(View.GONE);
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    pbLoadingImage.setVisibility(View.GONE);
-                }
-            });
+            Picasso.get().load(preferenceManager.getString(Constant.AVATAR)).into(imageAvatar);
         }
     }
 
     private void logout() {
-        textLogout.setOnClickListener(v -> {
+        buttonLogout.setOnClickListener(v -> {
             preferenceManager.putBoolean(Constant.IS_SIGNED_IN, false);
             preferenceManager.clear();
             getActivity().finish();
@@ -92,7 +84,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void changeInfo() {
-        textProfile.setOnClickListener(v -> {
+        layoutInfo.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), ChangeInfoActivity.class));
         });
     }
