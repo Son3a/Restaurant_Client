@@ -24,7 +24,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.button.MaterialButton;
 import com.nsb.restaurant.R;
-import com.nsb.restaurant.activity.OrderFoodActivity;
+import com.nsb.restaurant.activity.user.OrderFoodActivity;
 import com.nsb.restaurant.adapter.BookingNowAdapter;
 import com.nsb.restaurant.listener.BookingListener;
 import com.nsb.restaurant.model.BookingModel;

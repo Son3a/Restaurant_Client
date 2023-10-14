@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/background"
-    tools:context=".activity.PaymentHistoryActivity">
+    tools:context=".activity.user.PaymentHistoryActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/layoutHeader"

@@ -81,7 +81,7 @@ dependencies {
     implementation 'io.github.ParkSangGwon:tedpermission-normal:3.3.0'
 
     //Image picker
-    implementation group:'io.github.ParkSangGwon', name: 'tedbottompicker', version: '2.0.1'
+    implementation group: 'io.github.ParkSangGwon', name: 'tedbottompicker', version: '2.0.1'
 
     //cloudinary
     implementation 'com.cloudinary:cloudinary-android:2.3.1'
@@ -93,4 +93,5 @@ dependencies {
 
     //qr code
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+    implementation 'com.google.zxing:core:3.3.0'
 }

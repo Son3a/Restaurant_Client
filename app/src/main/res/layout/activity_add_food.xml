@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/background"
+    android:fillViewport="true"
+    tools:context=".activity.user.FoodDetailActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/layoutHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardElevation="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/primary">
+
+                <ImageView
+                    android:id="@+id/imageBack"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_back"
+                    android:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Chi tiết món ăn"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imageConfirmAddFood"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:background="@null"
+                    android:src="@drawable/ic_confirm_add_food"
+                    android:tint="@color/white" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <FrameLayout
+            android:id="@+id/layoutImageFood"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:background="#E1E0E0"
+            app:layout_constraintTop_toBottomOf="@+id/layoutHeader">
+
+            <ImageView
+                android:id="@+id/imageFood"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_add_image_food"
+                app:tint="@color/text" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/textTileNameFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Tên món ăn"
+            android:textColor="@color/primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/textNameFood"
+            app:layout_constraintTop_toBottomOf="@id/layoutImageFood" />
+
+        <EditText
+            android:id="@+id/textNameFood"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/background_edittext_add_food"
+            android:drawableLeft="@drawable/ic_food_add"
+            android:drawablePadding="10dp"
+            android:hint="Nhập tên món ăn"
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:textColor="@color/primary"
+            android:textColorHint="@color/text"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textTileNameFood" />
+
+        <TextView
+            android:id="@+id/textTitlePrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Giá món ăn"
+            android:textColor="@color/primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/textNameFood"
+            app:layout_constraintTop_toBottomOf="@id/textNameFood" />
+
+        <EditText
+            android:id="@+id/textPriceCurrent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_edittext_add_food"
+            android:hint="Nhập giá"
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:drawableLeft="@drawable/ic_price_food"
+            android:drawablePadding="10dp"
+            android:textColor="@color/primary"
+            android:textColorHint="@color/text"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@id/textNameFood"
+            app:layout_constraintTop_toBottomOf="@id/textTitlePrice" />
+
+
+        <TextView
+            android:id="@+id/textTitleTypeFood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Loại món ăn"
+            android:textColor="@color/primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/textNameFood"
+            app:layout_constraintTop_toBottomOf="@id/textPriceCurrent" />
+
+        <Spinner
+            android:id="@+id/spnTypeFood"
+            style="@style/text_spinner"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:paddingLeft="10dp"
+            android:background="@drawable/custom_spinner_type_food"
+            app:layout_constraintEnd_toEndOf="@+id/textNameFood"
+            app:layout_constraintStart_toStartOf="@id/textNameFood"
+            app:layout_constraintTop_toBottomOf="@id/textTitleTypeFood" />
+
+        <View
+            android:id="@+id/layoutLine"
+            android:layout_width="0dp"
+            android:layout_height="0.7dp"
+            android:layout_margin="10dp"
+            android:background="@color/primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spnTypeFood" />
+
+        <TextView
+            android:id="@+id/textTile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:text="Mô tả"
+            android:textColor="@color/primary"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layoutLine" />
+
+        <EditText
+            android:id="@+id/textDescription"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/background_edittext_add_food"
+            android:gravity="start"
+            android:hint="Nhập mô tả"
+            android:justificationMode="inter_word"
+            android:padding="10dp"
+            android:textColor="#615D5D"
+            android:textColorHint="@color/text"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textTile" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

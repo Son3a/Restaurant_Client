@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,9 +29,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.ybq.android.spinkit.SpinKitView;
 import com.nsb.restaurant.R;
-import com.nsb.restaurant.activity.FoodDetailActivity;
+import com.nsb.restaurant.activity.admin.AddFoodActivity;
+import com.nsb.restaurant.activity.user.FoodDetailActivity;
 import com.nsb.restaurant.adapter.FoodToOrderAdapter;
 import com.nsb.restaurant.adapter.PhotoAdapter;
 import com.nsb.restaurant.listener.CategoryListener;
@@ -57,7 +56,7 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
     private RecyclerView rcvListFoods;
     private FoodToOrderAdapter foodAdapter;
     private List<FoodModel> listFoods, listFoodBestSeller;
-    private ImageView buttonFindJob;
+    private ImageView buttonFindJob, btnAddFood;
     private EditText textDataSearch;
     private ViewPager2 viewPager2;
     private CircleIndicator3 indicator3;
@@ -103,6 +102,7 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
         textTitle = menuView.findViewById(R.id.textTitle);
         layoutRefresh = menuView.findViewById(R.id.layoutRefresh);
         pbLoading = menuView.findViewById(R.id.pbLoading);
+        btnAddFood = menuView.findViewById(R.id.imageAddFood);
     }
 
     private void setEvent() {
@@ -110,6 +110,7 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
         clickFindJob();
         getBestSeller();
         refreshData();
+        gotoAddFood();
     }
 
     private void refreshData() {
@@ -118,6 +119,12 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
             public void onRefresh() {
                 findFood();
             }
+        });
+    }
+
+    private void gotoAddFood() {
+        btnAddFood.setOnClickListener(v -> {
+            startActivity(new Intent(getActivity(), AddFoodActivity.class));
         });
     }
 

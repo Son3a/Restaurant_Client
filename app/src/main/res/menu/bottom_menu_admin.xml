@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_food"
+        android:icon="@drawable/custom_icon_menu"
+        android:title="Đồ ăn" />
+
+    <item
+        android:id="@+id/menu_booking"
+        android:icon="@drawable/custom_icon_order"
+        android:title="Phiếu đặt" />
+
+    <item
+        android:id="@+id/menu_sale_off"
+        android:icon="@drawable/custom_icon_order"
+        android:title="Khuyến mãi" />
+
+    <item
+        android:id="@+id/menu_statistial"
+        android:icon="@drawable/custom_icon_report"
+        android:title="Báo cáo" />
+
+    <item
+        android:id="@+id/menu_notification"
+        android:icon="@drawable/custom_icon_notification"
+        android:title="Thông báo"/>
+
+    <item
+        android:id="@+id/menu_account"
+        android:icon="@drawable/custom_icon_account"
+        android:title="Tài khoản"/>
+
+</menu>

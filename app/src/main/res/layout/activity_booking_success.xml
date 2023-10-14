@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/background"
-    tools:context=".activity.OrderFoodActivity">
+    tools:context=".activity.user.OrderFoodActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

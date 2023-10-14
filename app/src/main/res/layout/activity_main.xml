@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:fitsSystemWindows="true"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.user.MainUserActivity">
 
     <FrameLayout
         android:id="@+id/container"
@@ -51,5 +51,5 @@
         app:labelVisibilityMode="labeled"
         app:itemIconSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:menu="@menu/bottom_menu" />
+        app:menu="@menu/bottom_menu_user" />
 </androidx.constraintlayout.widget.ConstraintLayout>

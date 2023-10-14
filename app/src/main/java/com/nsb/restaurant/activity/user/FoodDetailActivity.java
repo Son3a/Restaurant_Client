@@ -1,4 +1,4 @@
-package com.nsb.restaurant.activity;
+package com.nsb.restaurant.activity.user;
 
 import static com.nsb.restaurant.util.Constant.formatSalary;
 
