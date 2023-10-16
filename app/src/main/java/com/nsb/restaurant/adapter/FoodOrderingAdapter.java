@@ -3,25 +3,20 @@ package com.nsb.restaurant.adapter;
 import static com.nsb.restaurant.util.Constant.formatSalary;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nsb.restaurant.activity.OrderFoodActivity;
+import com.nsb.restaurant.activity.user.OrderFoodActivity;
 import com.nsb.restaurant.databinding.ItemFoodOrderingBinding;
 import com.nsb.restaurant.listener.FoodListener;
 import com.nsb.restaurant.model.FoodModel;
 import com.nsb.restaurant.util.OnSwipeTouchListener;
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.List;
 
 public class FoodOrderingAdapter extends RecyclerView.Adapter<FoodOrderingAdapter.FoodOrderingHolder> {
@@ -60,6 +55,7 @@ public class FoodOrderingAdapter extends RecyclerView.Adapter<FoodOrderingAdapte
     }
 
     class FoodOrderingHolder extends RecyclerView.ViewHolder {
+
         ItemFoodOrderingBinding binding;
 
         FoodOrderingHolder(ItemFoodOrderingBinding itemFoodOrderingBinding) {

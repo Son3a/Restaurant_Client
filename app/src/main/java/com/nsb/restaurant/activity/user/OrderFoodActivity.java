@@ -1,4 +1,4 @@
-package com.nsb.restaurant.activity;
+package com.nsb.restaurant.activity.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.browser.customtabs.CustomTabsIntent;
@@ -396,7 +396,7 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
                 }
 
                 if (listFoodFirst.size() != foodModelListOrdering.size()) {
-                    binding.textPay.setBackgroundResource(R.color.orange);
+                    binding.textPay.setBackgroundResource(R.color.primary);
                     binding.textPay.setText("Xác nhận");
                     binding.textPay.setEnabled(true);
                     return;
@@ -407,7 +407,7 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
                             if (food1.getId().equals(food2.getId())) {
                                 isSame = true;
                                 if (food1.getNumOfFood() != food2.getNumOfFood()) {
-                                    binding.textPay.setBackgroundResource(R.color.orange);
+                                    binding.textPay.setBackgroundResource(R.color.primary);
                                     binding.textPay.setText("Xác nhận");
                                     binding.textPay.setEnabled(true);
                                     return;
@@ -415,14 +415,14 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
                             }
                         }
                         if (!isSame) {
-                            binding.textPay.setBackgroundResource(R.color.orange);
+                            binding.textPay.setBackgroundResource(R.color.primary);
                             binding.textPay.setText("Xác nhận");
                             binding.textPay.setEnabled(true);
                             return;
                         }
                     }
                     Log.d("foodd1", "not change");
-                    binding.textPay.setBackgroundResource(R.color.orange_opacity);
+                    binding.textPay.setBackgroundResource(R.color.primary_opacity);
                     binding.textPay.setEnabled(false);
                 }
 

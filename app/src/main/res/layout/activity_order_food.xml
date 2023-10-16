@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/background"
-    tools:context=".activity.OrderFoodActivity">
+    tools:context=".activity.user.OrderFoodActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/layoutHeader"
@@ -123,7 +123,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@color/orange_opacity"
+            android:background="@color/primary_opacity"
             android:enabled="false"
             android:gravity="center"
             android:text="Thanh toán "

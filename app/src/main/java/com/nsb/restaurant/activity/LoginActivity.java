@@ -1,7 +1,6 @@
 package com.nsb.restaurant.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.viewmodel.CreationExtras;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,12 +15,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.nsb.restaurant.activity.user.MainUserActivity;
 import com.nsb.restaurant.databinding.ActivityLoginBinding;
-import com.nsb.restaurant.model.FoodModel;
 import com.nsb.restaurant.util.Constant;
 import com.nsb.restaurant.util.PreferenceManager;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,9 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         preferenceManager = new PreferenceManager(LoginActivity.this);
         if (preferenceManager.getBoolean(Constant.IS_SIGNED_IN)) {
             finish();
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainUserActivity.class));
         }
-
 
         gotoSignUp();
         forgotPassword();
@@ -123,16 +119,15 @@ public class LoginActivity extends AppCompatActivity {
 
                     //finish();
 
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainUserActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 } catch (JSONException e) {
                     Log.d("Error", e.getMessage());
                     binding.buttonLogin.setVisibility(View.VISIBLE);
                     binding.pbLoading.setVisibility(View.INVISIBLE);
-                    Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "Email hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
                 }
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -164,10 +159,10 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void retry(VolleyError error) {
-
+                Log.d("Error", error.toString());
                 binding.buttonLogin.setVisibility(View.VISIBLE);
                 binding.pbLoading.setVisibility(View.INVISIBLE);
-                Toast.makeText(LoginActivity.this, "Email hoặc password không đúng!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LoginActivity.this, "Email hoặc password không đúng!", Toast.LENGTH_SHORT).show();
             }
         });
         queue.add(sr);

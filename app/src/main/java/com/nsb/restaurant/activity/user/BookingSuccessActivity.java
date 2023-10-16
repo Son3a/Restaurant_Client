@@ -1,8 +1,7 @@
-package com.nsb.restaurant.activity;
+package com.nsb.restaurant.activity.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,14 +21,12 @@ import com.nsb.restaurant.model.BookingModel;
 import com.nsb.restaurant.util.Constant;
 import com.nsb.restaurant.util.PreferenceManager;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 

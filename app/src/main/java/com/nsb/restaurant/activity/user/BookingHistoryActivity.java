@@ -1,9 +1,8 @@
-package com.nsb.restaurant.activity;
+package com.nsb.restaurant.activity.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +18,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nsb.restaurant.adapter.BookingHistoryAdapter;
 import com.nsb.restaurant.databinding.ActivityBookingHistoryBinding;
-import com.nsb.restaurant.fragment.BookingFragment;
 import com.nsb.restaurant.listener.BookingListener;
 import com.nsb.restaurant.model.BookingModel;
 import com.nsb.restaurant.util.Constant;
@@ -71,12 +69,12 @@ public class BookingHistoryActivity extends AppCompatActivity implements Booking
     }
 
     private void gotoBooking(){
-        binding.buttonBooking.setOnClickListener(v->{
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            intent.putExtra(Constant.IS_BOOKING, true);
-            startActivity(intent);
-        });
+//        binding.buttonBooking.setOnClickListener(v->{
+//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            intent.putExtra(Constant.IS_BOOKING, true);
+//            startActivity(intent);
+//        });
     }
 
     private void back() {
@@ -123,10 +121,10 @@ public class BookingHistoryActivity extends AppCompatActivity implements Booking
                     binding.layoutRefresh.setRefreshing(false);
                     if (bookingModelList.size() == 0) {
                         binding.textEmpty.setVisibility(View.VISIBLE);
-                        binding.buttonBooking.setVisibility(View.VISIBLE);
+                        //binding.buttonBooking.setVisibility(View.VISIBLE);
                     } else {
                         binding.textEmpty.setVisibility(View.GONE);
-                        binding.buttonBooking.setVisibility(View.GONE);
+                        //binding.buttonBooking.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

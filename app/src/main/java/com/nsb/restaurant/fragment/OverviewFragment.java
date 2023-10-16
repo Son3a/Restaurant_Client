@@ -49,13 +49,8 @@ public class OverviewFragment extends Fragment {
     private SaleOffAdapter saleOffAdapter;
     private List<SaleModel> saleModelList;
     private NestedScrollView layoutNested;
-    private OverviewInterface listener;
     private TopFoodAdapter topFoodAdapter;
     private List<FoodModel> foodModelList;
-
-    public interface OverviewInterface {
-        void setVisibleAppBar(Boolean isUp);
-    }
 
     @Nullable
     @Override
@@ -69,9 +64,9 @@ public class OverviewFragment extends Fragment {
 
     private void init() {
         textHotLine = overviewFragment.findViewById(R.id.textHotLine);
-        recyclerViewSaleOff = overviewFragment.findViewById(R.id.recycleViewSaleOff);
-        layoutNested = overviewFragment.findViewById(R.id.layoutContent);
-        recycleViewTopFood = overviewFragment.findViewById(R.id.recycleViewTopFood);
+        //recyclerViewSaleOff = overviewFragment.findViewById(R.id.recycleViewSaleOff);
+        //layoutNested = overviewFragment.findViewById(R.id.layoutContent);
+       // recycleViewTopFood = overviewFragment.findViewById(R.id.recycleViewTopFood);
         foodModelList = new ArrayList<>();
         saleModelList = new ArrayList<>();
     }
@@ -79,7 +74,6 @@ public class OverviewFragment extends Fragment {
     private void setEvent() {
         call();
         setSaleOffAdapter();
-        setVisibleBottomAppbar();
         setTopFoodAdapter();
         getTopFoods();
     }
@@ -162,35 +156,5 @@ public class OverviewFragment extends Fragment {
 
         saleOffAdapter = new SaleOffAdapter(saleModelList);
         recyclerViewSaleOff.setAdapter(saleOffAdapter);
-    }
-
-    private void setVisibleBottomAppbar() {
-        layoutNested.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY < oldScrollY) {
-                //Up
-                listener.setVisibleAppBar(true);
-            } else if (scrollY > oldScrollY) {
-                //Down
-                listener.setVisibleAppBar(false);
-            }
-        });
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OverviewInterface) {
-            //init the listener
-            listener = (OverviewInterface) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement InteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
     }
 }

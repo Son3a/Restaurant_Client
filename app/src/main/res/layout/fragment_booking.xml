@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     android:animateLayoutChanges="true"
+    android:background="@color/background"
     android:paddingBottom="20dp">
 
 
@@ -19,23 +19,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:background="@color/white">
-
-            <ImageButton
-                android:id="@+id/imageBack"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:background="@null"
-                android:src="@drawable/ic_back" />
+            android:background="@color/primary">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="Thông tin đặt bàn"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -269,7 +260,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:backgroundTint="@color/orange"
+                android:backgroundTint="@color/primary"
                 android:text="Đặt bàn ngay"
                 android:textColor="@color/white"
                 app:cornerRadius="20dp" />

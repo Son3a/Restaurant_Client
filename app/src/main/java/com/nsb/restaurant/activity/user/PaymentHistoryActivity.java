@@ -1,4 +1,4 @@
-package com.nsb.restaurant.activity;
+package com.nsb.restaurant.activity.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;

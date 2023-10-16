@@ -2,7 +2,6 @@ package com.nsb.restaurant.fragment;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,15 +29,13 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.nsb.restaurant.R;
-import com.nsb.restaurant.activity.OrderFoodActivity;
+import com.nsb.restaurant.activity.user.OrderFoodActivity;
 import com.nsb.restaurant.model.BookingModel;
-import com.nsb.restaurant.model.FoodModel;
 import com.nsb.restaurant.util.Constant;
 import com.nsb.restaurant.util.PreferenceManager;
 
@@ -66,7 +63,6 @@ public class BookingFragment extends Fragment {
     private EditText textNameClient, textPhone, textMail, textNote, textAmountPeople;
     private ImageButton buttonCloseBottom;
     private NestedScrollView layoutNested;
-    private BookingInterface listener;
     private RadioGroup radioGroup1, radioGroup2;
     private String amountPeople;
     private Button buttonBooking, buttonAmount;
@@ -79,10 +75,6 @@ public class BookingFragment extends Fragment {
     public static String stringNote;
     public static String nameTable = "";
     PreferenceManager preferenceManager;
-
-    public interface BookingInterface {
-        void setVisibleAppBar(Boolean isUp);
-    }
 
     @Nullable
     @Override
@@ -126,7 +118,6 @@ public class BookingFragment extends Fragment {
         textMail.setText(preferenceManager.getString(Constant.EMAIL));
         openBottomSheetAmountPeople();
         closeBottomSheet();
-        setVisibleBottomAppbar();
         setRadioGroup();
         pickDate();
         pickTime();
@@ -339,18 +330,6 @@ public class BookingFragment extends Fragment {
 
     }
 
-    private void setVisibleBottomAppbar() {
-        layoutNested.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (scrollY < oldScrollY) {
-                //Up
-                listener.setVisibleAppBar(true);
-            } else if (scrollY > oldScrollY) {
-                //Down
-                listener.setVisibleAppBar(false);
-            }
-        });
-    }
-
     private void amountClick() {
         buttonAmount.setOnClickListener(v -> {
             if (textAmountPeople != null && !textAmountPeople.equals("")) {
@@ -393,23 +372,5 @@ public class BookingFragment extends Fragment {
             }
 
         });
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof BookingInterface) {
-            //init the listener
-            listener = (BookingInterface) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement InteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        listener = null;
     }
 }

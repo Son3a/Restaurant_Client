@@ -31,10 +31,10 @@
                 android:id="@+id/toolBar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
-                android:layout_marginBottom="40dp"
+
+                android:background="@color/background"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark"
                 android:visibility="invisible"
-                android:background="@color/background"
                 app:layout_collapseMode="pin">
 
                 <TextView
@@ -47,23 +47,242 @@
                     android:textSize="26sp"
                     android:textStyle="bold" />
             </androidx.appcompat.widget.Toolbar>
-
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                app:tabBackground="@color/background"
-                app:tabIndicatorColor="@color/teal"
-                app:tabSelectedTextColor="@color/teal"
-                app:tabTextAppearance="@style/MineCustomTabText"
-                app:tabTextColor="@color/black" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+    <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:animateLayoutChanges="true"
+        android:background="@color/white"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:id="@+id/textNameRestaurant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="10dp"
+                android:text="Nhà hàng BaLi"
+                android:textColor="@color/black"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:drawableRight="@drawable/ic_star"
+                android:drawableTint="@color/orange"
+                android:text="5"
+                android:textColor="@color/orange"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/textNameRestaurant"
+                app:layout_constraintStart_toEndOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toTopOf="@id/textNameRestaurant" />
+
+            <TextView
+                android:id="@+id/textAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:paddingBottom="10dp"
+                android:text="@string/address"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/textNameRestaurant" />
+
+            <TextView
+                android:id="@+id/textTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_time"
+                android:drawablePadding="5dp"
+                android:drawableTint="@color/red"
+                android:text="Đóng"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/textAddress" />
+
+            <TextView
+                android:id="@+id/textTime1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=" - Mở: 09h00 - 22h00"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/textTime"
+                app:layout_constraintTop_toBottomOf="@id/textAddress" />
+
+            <FrameLayout
+                android:id="@+id/layoutShadow"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/background"
+                app:layout_constraintTop_toBottomOf="@id/textTime" />
+
+            <TextView
+                android:id="@+id/textInfoDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Thông tin chi tiết"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/layoutShadow" />
+
+            <LinearLayout
+                android:id="@+id/layoutDescRestaurant"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/textInfoDesc">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
+                    android:text="@string/info_desc_restaurant_1"
+                    android:textColor="@color/text"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:justificationMode="inter_word"
+                    android:text="@string/info_desc_restaurant_2"
+                    android:textColor="@color/text"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageMap"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="15dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_map"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/layoutDescRestaurant" />
+
+            <TextView
+                android:id="@+id/textTitleAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_address"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="Địa chỉ"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/imageMap" />
+
+            <TextView
+                android:id="@+id/textAddress1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:text="@string/address"
+                android:textColor="@color/text"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/textTitleAddress" />
+
+            <TextView
+                android:id="@+id/textTitleHotLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_phone_number"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="Hotline"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/textAddress1" />
+
+            <TextView
+                android:id="@+id/textHotLine"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:text="@string/phone_number"
+                android:textColor="@color/orange"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/textTitleHotLine" />
+
+            <TextView
+                android:id="@+id/textTitleType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/ic_type"
+                android:drawablePadding="5dp"
+                android:gravity="center_vertical"
+                android:text="Loại hình"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/textHotLine" />
+
+            <TextView
+                android:id="@+id/textType"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:text="FULL SERVICE"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textNameRestaurant"
+                app:layout_constraintTop_toBottomOf="@id/textTitleType" />
+
+            <FrameLayout
+                android:id="@+id/layoutShadow1"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/background_shadow"
+                app:layout_constraintTop_toBottomOf="@id/textType" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

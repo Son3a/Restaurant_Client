@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     android:animateLayoutChanges="true"
-    tools:context=".activity.OrderFoodActivity">
+    android:background="@color/background"
+    tools:context=".activity.user.OrderFoodActivity">
 
 
     <androidx.cardview.widget.CardView
@@ -147,11 +147,11 @@
         android:id="@+id/pbLoading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@+id/layoutConfirm"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/layoutConfirm"
-        app:layout_constraintStart_toStartOf="@+id/layoutConfirm"
         app:layout_constraintEnd_toEndOf="@+id/layoutConfirm"
-        android:visibility="invisible"/>
+        app:layout_constraintStart_toStartOf="@+id/layoutConfirm"
+        app:layout_constraintTop_toTopOf="@+id/layoutConfirm" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layoutConfirm"
@@ -169,8 +169,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_centerHorizontal="true"
-
-            android:backgroundTint="@color/orange"
+            android:backgroundTint="@color/primary"
             android:text="Xác nhận"
             android:textAllCaps="false"
             android:textColor="@color/white"
@@ -183,12 +182,12 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="120dp"
             android:src="@drawable/ic_lock"
-            android:tint="@color/white"
             android:translationZ="10dp"
             app:layout_constraintBottom_toBottomOf="@id/buttonConfirm"
             app:layout_constraintEnd_toEndOf="@id/buttonConfirm"
             app:layout_constraintStart_toStartOf="@id/buttonConfirm"
-            app:layout_constraintTop_toTopOf="@id/buttonConfirm" />
+            app:layout_constraintTop_toTopOf="@id/buttonConfirm"
+            app:tint="@color/white" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

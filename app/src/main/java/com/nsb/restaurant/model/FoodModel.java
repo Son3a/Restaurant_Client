@@ -1,9 +1,10 @@
 package com.nsb.restaurant.model;
 
-public class FoodModel {
-    String id, name, price, image;
+import java.io.Serializable;
+
+public class FoodModel implements Serializable {
+    String id, name, price, image, saleOff, priceSaleOff, description;
     int numOfFood;
-    String saleOff, priceSaleOff;
 
     public FoodModel() {
     }
@@ -47,6 +48,16 @@ public class FoodModel {
         this.image = image;
         this.saleOff = saleOff;
         this.priceSaleOff = priceSaleOff;
+    }
+
+    public FoodModel(String id, String name, String price, String image, String saleOff, String priceSaleOff, String description) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.image = image;
+        this.saleOff = saleOff;
+        this.priceSaleOff = priceSaleOff;
+        this.description = description;
     }
 
     public String getSaleOff() {
