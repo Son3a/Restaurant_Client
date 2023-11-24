@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
         init();
         setEvent();
         setBottomNavigationView();
-
-
     }
 
     private void init() {
