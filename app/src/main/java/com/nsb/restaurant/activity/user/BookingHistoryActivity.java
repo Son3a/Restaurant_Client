@@ -1,9 +1,8 @@
-package com.nsb.restaurant.activity;
+package com.nsb.restaurant.activity.user;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +18,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nsb.restaurant.adapter.BookingHistoryAdapter;
 import com.nsb.restaurant.databinding.ActivityBookingHistoryBinding;
-import com.nsb.restaurant.fragment.BookingFragment;
 import com.nsb.restaurant.listener.BookingListener;
 import com.nsb.restaurant.model.BookingModel;
 import com.nsb.restaurant.util.Constant;

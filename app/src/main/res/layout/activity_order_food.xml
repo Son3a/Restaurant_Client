@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/background"
-    tools:context=".activity.OrderFoodActivity">
+    tools:context=".activity.user.OrderFoodActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/layoutHeader"

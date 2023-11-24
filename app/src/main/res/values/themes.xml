@@ -9,14 +9,12 @@
     </style>
 
 
-<!--    Custom corner Bottom sheet dialog-->
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
+    <!--    Custom corner Bottom sheet dialog-->
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
 
-    <style name="AppModalStyle"
-        parent="Widget.Design.BottomSheet.Modal">
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/background_bottom_amount_people</item>
     </style>
     <!--=====================================================-->
@@ -32,8 +30,13 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="text_spinner">
+        <item name="android:textColor">@color/primary</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 
-<!--    Custom text size tab layout-->
+
+    <!--    Custom text size tab layout-->
     <style name="MineCustomTabText" parent="TextAppearance.Design.Tab">
         <item name="android:textSize">18sp</item>
     </style>

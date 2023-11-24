@@ -1,16 +1,19 @@
-package com.nsb.restaurant.activity;
+package com.nsb.restaurant.activity.user;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.TranslateAnimation;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationBarView;
+import com.journeyapps.barcodescanner.CaptureActivity;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 import com.nsb.restaurant.R;
 import com.nsb.restaurant.databinding.ActivityMainBinding;
 import com.nsb.restaurant.fragment.AccountFragment;
@@ -18,12 +21,10 @@ import com.nsb.restaurant.fragment.BookingFragment;
 import com.nsb.restaurant.fragment.InfoRestaurantFragment;
 import com.nsb.restaurant.fragment.MenuFragment;
 import com.nsb.restaurant.fragment.OrderFoodFragment;
-import com.nsb.restaurant.fragment.OverviewFragment;
-import com.nsb.restaurant.listener.ListenFromFragment;
 import com.nsb.restaurant.util.Constant;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainUserActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private InfoRestaurantFragment infoFragment;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setEvent() {
-
+        clickScanner();
     }
 
     private void setBottomNavigationView() {
@@ -91,5 +92,34 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    private void clickScanner() {
+        binding.imageQrcode.setOnClickListener(v -> {
+            scanQRCode();
+        });
+    }
+
+    ActivityResultLauncher<ScanOptions> barLauncher = registerForActivityResult(new ScanContract(), result -> {
+        if (result.getContents() != null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Result");
+            builder.setMessage(result.getContents());
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                }
+            }).show();
+        }
+    });
+
+    private void scanQRCode() {
+        ScanOptions options = new ScanOptions();
+        options.setPrompt("Volume up to flash on");
+        options.setBeepEnabled(true);
+        options.setOrientationLocked(true);
+        options.setCaptureActivity(CaptureActivity.class);
+        barLauncher.launch(options);
     }
 }

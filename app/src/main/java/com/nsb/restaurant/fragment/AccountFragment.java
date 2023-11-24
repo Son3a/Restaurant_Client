@@ -1,14 +1,11 @@
 package com.nsb.restaurant.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,14 +15,13 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.nsb.restaurant.R;
-import com.nsb.restaurant.activity.BookingHistoryActivity;
+import com.nsb.restaurant.activity.user.BookingHistoryActivity;
 import com.nsb.restaurant.activity.ChangeInfoActivity;
-import com.nsb.restaurant.activity.PaymentHistoryActivity;
+import com.nsb.restaurant.activity.user.PaymentHistoryActivity;
 import com.nsb.restaurant.activity.LoginActivity;
 import com.nsb.restaurant.activity.UpdatePasswordActivity;
 import com.nsb.restaurant.util.Constant;
 import com.nsb.restaurant.util.PreferenceManager;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 public class AccountFragment extends Fragment {
