@@ -23,6 +23,7 @@ import java.util.List;
 public class FoodToOrderAdapter extends RecyclerView.Adapter<FoodToOrderAdapter.FoodToOrderHolder> {
     private final List<FoodModel> foodModelList;
     private final FoodListener listener;
+
     public FoodToOrderAdapter(List<FoodModel> foodModelList, FoodListener listener) {
         this.foodModelList = foodModelList;
         this.listener = listener;
@@ -63,10 +64,10 @@ public class FoodToOrderAdapter extends RecyclerView.Adapter<FoodToOrderAdapter.
             if (foodModel.getImage() != null && !foodModel.getImage().equals("")) {
                 Picasso.get().load(foodModel.getImage()).into(binding.imageFood);
             }
-            binding.getRoot().setOnClickListener(v->{
+            binding.getRoot().setOnClickListener(v -> {
                 listener.onClickFood(foodModel);
             });
-            if (!foodModel.getSaleOff().equals("")) {
+            if (foodModel.getSaleOff() != null && !foodModel.getSaleOff().equals("")) {
                 int priceCurrent = Integer.parseInt(foodModel.getPrice()) - Integer.parseInt(foodModel.getPriceSaleOff());
                 binding.textSaleOff.setText("-" + foodModel.getSaleOff() + "%");
                 binding.textPriceSaleOff.setText(formatSalary(foodModel.getPrice()) + "đ");

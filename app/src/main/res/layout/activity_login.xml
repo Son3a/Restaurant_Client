@@ -120,6 +120,7 @@
             android:layout_marginTop="40dp"
             android:backgroundTint="@color/primary"
             android:text="Đăng nhập"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:cornerRadius="10dp"

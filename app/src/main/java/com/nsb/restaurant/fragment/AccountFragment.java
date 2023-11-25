@@ -15,11 +15,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
 import com.nsb.restaurant.R;
-import com.nsb.restaurant.activity.user.BookingHistoryActivity;
 import com.nsb.restaurant.activity.ChangeInfoActivity;
-import com.nsb.restaurant.activity.user.PaymentHistoryActivity;
 import com.nsb.restaurant.activity.LoginActivity;
 import com.nsb.restaurant.activity.UpdatePasswordActivity;
+import com.nsb.restaurant.activity.user.BookingHistoryActivity;
+import com.nsb.restaurant.activity.user.PaymentHistoryActivity;
 import com.nsb.restaurant.util.Constant;
 import com.nsb.restaurant.util.PreferenceManager;
 import com.squareup.picasso.Picasso;

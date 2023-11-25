@@ -1,18 +1,11 @@
 package com.nsb.restaurant.activity;
 
-import android.Manifest;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -22,31 +15,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.normal.TedPermission;
 import com.nsb.restaurant.databinding.ActivitySignUpBinding;
 import com.nsb.restaurant.util.Constant;
-import com.nsb.restaurant.util.RealPathUtil;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-
-import gun0912.tedbottompicker.TedBottomPicker;
-import gun0912.tedbottompicker.TedBottomSheetDialogFragment;
 
 public class SignUpActivity extends AppCompatActivity {
     private ActivitySignUpBinding binding;
-    private String urlImage = "";
-    private String pathImage = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +33,20 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(binding.getRoot());
 
+        backToLogin();
         eventConfirm();
-        getFileMedia();
+    }
+
+    private void backToLogin() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        finish();
+        startActivity(intent);
     }
 
     private boolean isEmpty() {
         if (binding.inputEmail.getText().toString().equals("") || binding.inputPassword.getText().toString().equals("") ||
                 binding.inputConfirmPassword.getText().toString().equals("") || binding.inputFName.getText().toString().equals("") ||
-                binding.inputLName.getText().toString().equals("") || binding.inputPhone.getText().toString().equals("") ||
-                pathImage.equals("")) {
+                binding.inputLName.getText().toString().equals("") || binding.inputPhone.getText().toString().equals("")) {
             return true;
         }
         return false;
@@ -78,20 +62,15 @@ public class SignUpActivity extends AppCompatActivity {
                 Toast.makeText(this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            if (!pathImage.equals("")) {
-                uploadImageToCloud(new File(pathImage));
                 try {
                     signUp();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
         });
     }
 
     private void signUp() throws JSONException {
-        if (urlImage.equals("")) return;
         String url = Constant.URL_DEV + "/auth/register";
         binding.buttonSignUp.setVisibility(View.INVISIBLE);
         binding.pbLoading.setVisibility(View.VISIBLE);
@@ -106,7 +85,7 @@ public class SignUpActivity extends AppCompatActivity {
         jsonRequest.put("email", email);
         jsonRequest.put("password", password);
         jsonRequest.put("phoneNum", phone);
-        jsonRequest.put("avatar", urlImage);
+        jsonRequest.put("avatar", "");
         jsonRequest.put("idRole", "Q01");
         jsonRequest.put("fName", fName);
         jsonRequest.put("lName", lName);
@@ -158,54 +137,26 @@ public class SignUpActivity extends AppCompatActivity {
         queue.add(sr);
     }
 
-    private void getFileMedia() {
-        binding.imageProfile.setOnClickListener(v -> {
-            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            pickImage.launch(i);
-        });
-    }
-
-    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == RESULT_OK) {
-                    if (result.getData() != null) {
-                        Uri imageUri = result.getData().getData();
-                        try {
-                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
-                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                            binding.imageProfile.setImageBitmap(bitmap);
-                            binding.textAddImage.setVisibility(View.GONE);
-                            pathImage = RealPathUtil.getPath(SignUpActivity.this, imageUri);
-                            //uploadImageToCloud(new File(RealPathUtil.getPath(SignUpActivity.this, imageUri)));
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-    );
-
-    private void uploadImageToCloud(File file) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                            "cloud_name", "dnstykqpa",
-                            "api_key", "592721243373484",
-                            "api_secret", "II9-bCcD8CkphOGPwwiClJLx7zQ"));
-
-                    Map uploadResult = cloudinary.uploader().upload((file),
-                            ObjectUtils.asMap("public_id", file.getName()));
-                    urlImage = uploadResult.get("url").toString();
-                    Log.d("imageAvatar", urlImage.length() + ": " + urlImage);
-                } catch (Exception e) {
-                    Log.d("ErrorUpload", e.getMessage());
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
-    }
+//    private void uploadImageToCloud(File file) {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
+//                            "cloud_name", "dnstykqpa",
+//                            "api_key", "592721243373484",
+//                            "api_secret", "II9-bCcD8CkphOGPwwiClJLx7zQ"));
+//
+//                    Map uploadResult = cloudinary.uploader().upload((file),
+//                            ObjectUtils.asMap("public_id", file.getName()));
+//                    urlImage = uploadResult.get("url").toString();
+//                    Log.d("imageAvatar", urlImage.length() + ": " + urlImage);
+//                } catch (Exception e) {
+//                    Log.d("ErrorUpload", e.getMessage());
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+//
+//    }
 }

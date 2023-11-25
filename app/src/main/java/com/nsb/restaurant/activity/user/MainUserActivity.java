@@ -56,9 +56,17 @@ public class MainUserActivity extends AppCompatActivity {
 
     private void setEvent() {
         clickScanner();
+        setStateBottomSheet();
+    }
+
+    private void setStateBottomSheet() {
+        binding.container.setOnClickListener(v -> {
+            binding.bottomNavigationView.setBackgroundResource(R.drawable.background_bottom_sheet_transparent);
+        });
     }
 
     private void setBottomNavigationView() {
+        binding.bottomNavigationView.setBackgroundResource(R.drawable.background_bottom_sheet);
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constant.IS_BOOKING) == true) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container, bookingFragment).commit();
             return;

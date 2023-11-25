@@ -259,10 +259,10 @@
                 android:layout_below="@id/textNote"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
                 android:backgroundTint="@color/primary"
                 android:text="Đặt bàn ngay"
                 android:textColor="@color/white"
+                android:layout_marginBottom="50dp"
                 app:cornerRadius="20dp" />
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>

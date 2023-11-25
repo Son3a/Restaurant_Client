@@ -9,7 +9,7 @@
 
     <item
         android:id="@+id/menu_food"
-        android:icon="@drawable/custom_icon_order"
+        android:icon="@drawable/custom_icon_menu"
         android:title="Thực đơn" />
 
     <item
