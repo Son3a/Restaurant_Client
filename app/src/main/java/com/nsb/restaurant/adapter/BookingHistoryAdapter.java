@@ -59,11 +59,6 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
             binding.getRoot().setOnClickListener(v -> {
                 listener.onClickBooking(bookingModel);
             });
-            if(bookingModel.getStatus().equalsIgnoreCase(Constant.STATUS_END) || bookingModel.getStatus().equalsIgnoreCase(Constant.STATUS_CANCELED)){
-                binding.textBookingAgain.setVisibility(View.VISIBLE);
-            } else {
-                binding.textBookingAgain.setVisibility(View.GONE);
-            }
         }
     }
 

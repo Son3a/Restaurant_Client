@@ -4,13 +4,13 @@
 
     <item
         android:id="@+id/menu_home"
-        android:icon="@drawable/custom_icon_home"
-        android:title="Giới thiệu" />
+        android:icon="@drawable/ic_home_fill"
+        android:title="" />
 
     <item
         android:id="@+id/menu_food"
-        android:icon="@drawable/custom_icon_menu"
-        android:title="Thực đơn" />
+        android:icon="@drawable/ic_menu"
+        android:title="" />
 
     <item
         android:id="@+id/menu_qrcode"
@@ -18,12 +18,12 @@
 
     <item
         android:id="@+id/menu_booking"
-        android:icon="@drawable/custom_icon_order"
-        android:title="Đặt bàn" />
+        android:icon="@drawable/ic_order_filled"
+        android:title="" />
 
     <item
         android:id="@+id/menu_account"
-        android:icon="@drawable/custom_icon_account"
-        android:title="Tài khoản" />
+        android:icon="@drawable/ic_account"
+        android:title="" />
 
 </menu>
