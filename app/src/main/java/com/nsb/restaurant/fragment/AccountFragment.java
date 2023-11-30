@@ -1,6 +1,7 @@
 package com.nsb.restaurant.fragment;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.button.MaterialButton;
@@ -19,41 +21,34 @@ import com.nsb.restaurant.activity.ChangeInfoActivity;
 import com.nsb.restaurant.activity.LoginActivity;
 import com.nsb.restaurant.activity.UpdatePasswordActivity;
 import com.nsb.restaurant.activity.user.BookingHistoryActivity;
+import com.nsb.restaurant.activity.user.MainUserActivity;
 import com.nsb.restaurant.activity.user.PaymentHistoryActivity;
+import com.nsb.restaurant.databinding.FragmentAccountBinding;
 import com.nsb.restaurant.util.Constant;
 import com.nsb.restaurant.util.PreferenceManager;
 import com.squareup.picasso.Picasso;
 
 public class AccountFragment extends Fragment {
-    private View accountView;
-    private TextView textPaymentHistory, textBookingHistory, textChangePW, textName;
-    private ImageView imageAvatar;
+    private FragmentAccountBinding binding;
     private PreferenceManager preferenceManager;
-    private ConstraintLayout layoutInfo;
-    private MaterialButton buttonLogout;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        accountView = inflater.inflate(R.layout.fragment_account, container, false);
+        binding = FragmentAccountBinding.inflate(getLayoutInflater());
 
         init();
         setEvent();
 
-        return accountView;
+        return binding.getRoot();
     }
 
     private void init() {
-        textPaymentHistory = accountView.findViewById(R.id.textPaymentHistory);
-        textBookingHistory = accountView.findViewById(R.id.textBookingHistory);
-        textChangePW = accountView.findViewById(R.id.textUpdatePassword);
         preferenceManager = new PreferenceManager(getActivity());
-        textName = accountView.findViewById(R.id.textName);
-        imageAvatar = accountView.findViewById(R.id.imageAvatar);
-        layoutInfo = accountView.findViewById(R.id.layoutInfo);
-        buttonLogout = accountView.findViewById(R.id.buttonLogout);
     }
 
     private void setEvent() {
+        setStateBottomSheet();
         loading();
         gotoBookingHistory();
         gotoPaymentHistory();
@@ -62,15 +57,21 @@ public class AccountFragment extends Fragment {
         logout();
     }
 
+    private void setStateBottomSheet() {
+        Constant.setTransparentBottomSheet(getContext(), binding.getRoot());
+        Constant.setTransparentBottomSheet(getContext(), binding.layoutContent);
+        Constant.setTransparentBottomSheet(getContext(), binding.layoutInfo);
+    }
+
     private void loading() {
-        textName.setText(preferenceManager.getString(Constant.USER_NAME));
+        binding.textName.setText(preferenceManager.getString(Constant.USER_NAME));
         if (preferenceManager.getString(Constant.AVATAR) != null && !preferenceManager.getString(Constant.AVATAR).equals("")) {
-            Picasso.get().load(preferenceManager.getString(Constant.AVATAR)).into(imageAvatar);
+            Picasso.get().load(preferenceManager.getString(Constant.AVATAR)).into(binding.imageAvatar);
         }
     }
 
     private void logout() {
-        buttonLogout.setOnClickListener(v -> {
+        binding.buttonLogout.setOnClickListener(v -> {
             preferenceManager.putBoolean(Constant.IS_SIGNED_IN, false);
             preferenceManager.clear();
             getActivity().finish();
@@ -80,25 +81,25 @@ public class AccountFragment extends Fragment {
     }
 
     private void changeInfo() {
-        layoutInfo.setOnClickListener(v -> {
+        binding.layoutInfo.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), ChangeInfoActivity.class));
         });
     }
 
     private void changePassword() {
-        textChangePW.setOnClickListener(v -> {
+        binding.textUpdatePassword.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), UpdatePasswordActivity.class));
         });
     }
 
     private void gotoBookingHistory() {
-        textBookingHistory.setOnClickListener(v -> {
+        binding.textBookingHistory.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), BookingHistoryActivity.class));
         });
     }
 
     private void gotoPaymentHistory() {
-        textPaymentHistory.setOnClickListener(v -> {
+        binding.textPaymentHistory.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), PaymentHistoryActivity.class));
         });
     }

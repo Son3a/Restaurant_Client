@@ -34,7 +34,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.nsb.restaurant.R;
+import com.nsb.restaurant.activity.user.MainUserActivity;
 import com.nsb.restaurant.activity.user.OrderFoodActivity;
+import com.nsb.restaurant.databinding.BottomAmountPeopleBinding;
+import com.nsb.restaurant.databinding.FragmentBookingBinding;
 import com.nsb.restaurant.model.BookingModel;
 import com.nsb.restaurant.util.Constant;
 import com.nsb.restaurant.util.PreferenceManager;
@@ -57,16 +60,10 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BookingFragment extends Fragment {
-    private View bookingView, bottomSheetAmountPeopleView, mainView;
+    private FragmentBookingBinding binding;
+    private BottomAmountPeopleBinding bindingAmountPeople;
     private BottomSheetDialog bottomSheetAmountPeople;
-    private TextView textAmount, textDate, textTime;
-    private EditText textNameClient, textPhone, textMail, textNote, textAmountPeople;
-    private ImageButton buttonCloseBottom;
-    private NestedScrollView layoutNested;
-    private RadioGroup radioGroup1, radioGroup2;
     private String amountPeople;
-    private Button buttonBooking, buttonAmount;
-    private ProgressBar pbLoading;
     private String timeBooking;
     private String dateBooking;
     public static String timeBookingTable;
@@ -79,43 +76,25 @@ public class BookingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        bookingView = inflater.inflate(R.layout.fragment_booking, container, false);
-        bottomSheetAmountPeopleView = inflater.inflate(R.layout.bottom_amount_people, container, false);
-        mainView = inflater.inflate(R.layout.activity_main, container, false);
-        preferenceManager = new PreferenceManager(getActivity());
+        binding = FragmentBookingBinding.inflate(getLayoutInflater());
+        bindingAmountPeople = BottomAmountPeopleBinding.inflate(getLayoutInflater());
 
         init();
-        setBottomSheetAmountPeople();
-
-
         setEvent();
-        return bookingView;
+
+        return binding.getRoot();
     }
 
     private void init() {
-        textAmount = bookingView.findViewById(R.id.textAmount);
-        buttonCloseBottom = bottomSheetAmountPeopleView.findViewById(R.id.imageClose);
-        layoutNested = bookingView.findViewById(R.id.layoutNested);
-        textDate = bookingView.findViewById(R.id.textDateBooking);
-        textTime = bookingView.findViewById(R.id.textTimeBooking);
-        textMail = bookingView.findViewById(R.id.textEmail);
-        textPhone = bookingView.findViewById(R.id.textPhone);
-        textNameClient = bookingView.findViewById(R.id.textName);
-        textNote = bookingView.findViewById(R.id.textNote);
-        buttonBooking = bookingView.findViewById(R.id.buttonBooking);
-        pbLoading = bookingView.findViewById(R.id.pbLoading);
-        textAmountPeople = bottomSheetAmountPeopleView.findViewById(R.id.textAmountPeople);
-        buttonAmount = bottomSheetAmountPeopleView.findViewById(R.id.buttonSubmitAmount);
-
-        radioGroup1 = bottomSheetAmountPeopleView.findViewById(R.id.radioGroup1);
-        radioGroup2 = bottomSheetAmountPeopleView.findViewById(R.id.radioGroup2);
+        preferenceManager = new PreferenceManager(getActivity());
+        setBottomSheetAmountPeople();
         idTables = new ArrayList<>();
     }
 
     private void setEvent() {
-        textNameClient.setText(preferenceManager.getString(Constant.USER_NAME));
-        textPhone.setText(preferenceManager.getString(Constant.PHONE_NUM));
-        textMail.setText(preferenceManager.getString(Constant.EMAIL));
+        binding.textName.setText(preferenceManager.getString(Constant.USER_NAME));
+        binding.textPhone.setText(preferenceManager.getString(Constant.PHONE_NUM));
+        binding.textEmail.setText(preferenceManager.getString(Constant.EMAIL));
         openBottomSheetAmountPeople();
         closeBottomSheet();
         setRadioGroup();
@@ -124,13 +103,18 @@ public class BookingFragment extends Fragment {
         bookingClick();
         setDateTime();
         amountClick();
+        setStateBottomSheet();
     }
 
+    private void setStateBottomSheet() {
+        Constant.setTransparentBottomSheet(getContext(), binding.getRoot());
+        Constant.setTransparentBottomSheet(getContext(), binding.layoutContent);
+    }
 
     private void bookingClick() {
-        buttonBooking.setOnClickListener(v -> {
+        binding.buttonBooking.setOnClickListener(v -> {
             try {
-                if (textAmountPeople != null && !textAmountPeople.getText().toString().equals("")) {
+                if (binding.textAmount != null && !binding.textAmount.getText().toString().equals("")) {
                     getTableToBooking();
                 } else {
                     Toast.makeText(getActivity(), "Type num of people", Toast.LENGTH_SHORT).show();
@@ -151,7 +135,7 @@ public class BookingFragment extends Fragment {
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         JSONObject jsonRequest = new JSONObject();
-        jsonRequest.put("amountPeople", textAmountPeople.getText().toString());
+        jsonRequest.put("amountPeople", binding.textAmount.getText().toString());
         jsonRequest.put("time", time);
 
         JsonObjectRequest sr = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
@@ -161,8 +145,8 @@ public class BookingFragment extends Fragment {
                     JSONArray jsonArray = response.getJSONArray("data");
 
                     timeBookingTable = time;
-                    numOfPeople = textAmountPeople.getText().toString();
-                    stringNote = textNote != null ? textNote.getText().toString() : "";
+                    numOfPeople = binding.textAmount.getText().toString();
+                    stringNote = binding.textNote != null ? binding.textNote.getText().toString() : "";
 
                     nameTable = "";
                     idTables.clear();
@@ -182,16 +166,16 @@ public class BookingFragment extends Fragment {
                             numOfPeople,
                             Constant.WAITING_BOOKING_TABLE,
                             dateFormat.format(date),
-                            textNameClient.getText().toString(),
-                            textPhone.getText().toString(),
-                            textMail.getText().toString(),
+                            binding.textName.getText().toString(),
+                            binding.textPhone.getText().toString(),
+                            binding.textEmail.getText().toString(),
                             nameTable);
 
                     Intent intent = new Intent(getActivity(), OrderFoodActivity.class);
                     intent.putExtra(Constant.BOOKING_OBJECT, bookingModel);
                     startActivity(intent);
 
-                    Log.d("IDBAN", textNameClient.getText().toString());
+                    Log.d("IDBAN", binding.textName.getText().toString());
                 } catch (JSONException e) {
                     Log.d("Error", e.getMessage());
                 }
@@ -221,7 +205,7 @@ public class BookingFragment extends Fragment {
 
     private void setBottomSheetAmountPeople() {
         bottomSheetAmountPeople = new BottomSheetDialog(getActivity());
-        bottomSheetAmountPeople.setContentView(bottomSheetAmountPeopleView);
+        bottomSheetAmountPeople.setContentView(bindingAmountPeople.getRoot());
     }
 
     private void showKeyboard() {
@@ -236,13 +220,13 @@ public class BookingFragment extends Fragment {
     }
 
     private void closeBottomSheet() {
-        buttonCloseBottom.setOnClickListener(v -> {
+        bindingAmountPeople.imageClose.setOnClickListener(v -> {
             bottomSheetAmountPeople.dismiss();
         });
     }
 
     private void openBottomSheetAmountPeople() {
-        textAmount.setOnClickListener(v -> {
+        binding.textAmount.setOnClickListener(v -> {
             showKeyboard();
             bottomSheetAmountPeople.show();
         });
@@ -264,14 +248,14 @@ public class BookingFragment extends Fragment {
         if (minute.length() <= 1) {
             minute = "0" + minute;
         }
-        textTime.setText(hour + ":" + minute);
-        textDate.setText(day + " tháng " + month);
+        binding.textTimeBooking.setText(hour + ":" + minute);
+        binding.textTimeBooking.setText(day + " tháng " + month);
         timeBooking = hour + ":" + minute;
         dateBooking = year + "/" + month + "/" + day;
     }
 
     private void pickDate() {
-        textDate.setOnClickListener(v -> {
+        binding.textDateBooking.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             int yearNow = calendar.get(Calendar.YEAR);
             int monthNow = calendar.get(Calendar.MONTH);
@@ -281,10 +265,10 @@ public class BookingFragment extends Fragment {
                 @Override
                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                     if (checkTime(day, month + 1, year)){
-                        textDate.setText(day + " tháng " + (month + 1));
+                        binding.textDateBooking.setText(day + " tháng " + (month + 1));
                         dateBooking = year + "/" + (month + 1) + "/" + day;
                     } else {
-                        textDate.setText(dayNow + " tháng " + (monthNow + 1));
+                        binding.textDateBooking.setText(dayNow + " tháng " + (monthNow + 1));
                         dateBooking = yearNow + "/" + (monthNow + 1) + "/" + dayNow;
                     }
                 }
@@ -305,7 +289,7 @@ public class BookingFragment extends Fragment {
     }
 
     private void pickTime() {
-        textTime.setOnClickListener(v -> {
+        binding.textTimeBooking.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.MINUTE, 30);
             int hourNow = calendar.get(Calendar.HOUR_OF_DAY);
@@ -321,7 +305,7 @@ public class BookingFragment extends Fragment {
                     if (minute < 10) {
                         stringMinute = "0" + stringMinute;
                     }
-                    textTime.setText(stringHour + ":" + stringMinute);
+                    binding.textTimeBooking.setText(stringHour + ":" + stringMinute);
                     timeBooking = stringHour + ":" + stringMinute;
                 }
             }, hourNow, minuteNow, true);
@@ -331,9 +315,9 @@ public class BookingFragment extends Fragment {
     }
 
     private void amountClick() {
-        buttonAmount.setOnClickListener(v -> {
-            if (textAmountPeople != null && !textAmountPeople.equals("")) {
-                textAmount.setText(textAmountPeople.getText().toString() + " người");
+        bindingAmountPeople.buttonSubmitAmount.setOnClickListener(v -> {
+            if (bindingAmountPeople.textAmountPeople != null && !bindingAmountPeople.textAmountPeople.equals("")) {
+                binding.textAmount.setText(bindingAmountPeople.textAmountPeople.getText().toString() + " người");
                 bottomSheetAmountPeople.dismiss();
             }
         });
@@ -342,9 +326,9 @@ public class BookingFragment extends Fragment {
     private void setRadioGroup() {
 
         AtomicBoolean flag = new AtomicBoolean(true);
-        radioGroup1.setOnCheckedChangeListener((group, checkedId) -> {
+        bindingAmountPeople.radioGroup1.setOnCheckedChangeListener((group, checkedId) -> {
             if (flag.get()) {
-                radioGroup2.clearCheck();
+                bindingAmountPeople.radioGroup2.clearCheck();
                 flag.set(false);
 
             }
@@ -353,13 +337,13 @@ public class BookingFragment extends Fragment {
                 amountPeople = radioButton.getText().toString();
 
                 int value = Integer.parseInt(amountPeople.replaceAll("[^0-9]", ""));
-                textAmountPeople.setText(String.valueOf(value));
+                bindingAmountPeople.textAmountPeople.setText(String.valueOf(value));
             }
 
         });
-        radioGroup2.setOnCheckedChangeListener((group, checkedId) -> {
+        bindingAmountPeople.radioGroup2.setOnCheckedChangeListener((group, checkedId) -> {
             if (!flag.get()) {
-                radioGroup1.clearCheck();
+                bindingAmountPeople.radioGroup1.clearCheck();
                 flag.set(true);
 
             }
@@ -368,7 +352,7 @@ public class BookingFragment extends Fragment {
                 amountPeople = radioButton.getText().toString();
 
                 int value = Integer.parseInt(amountPeople.replaceAll("[^0-9]", ""));
-                textAmountPeople.setText(String.valueOf(value));
+                bindingAmountPeople.textAmountPeople.setText(String.valueOf(value));
             }
 
         });

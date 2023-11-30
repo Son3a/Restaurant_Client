@@ -6,6 +6,7 @@
     android:background="@color/background"
     android:orientation="vertical">
 
+
     <androidx.cardview.widget.CardView
         android:id="@+id/layoutHeader"
         android:layout_width="match_parent"
@@ -80,6 +81,7 @@
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="15dp">
@@ -209,7 +211,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="40dp"
                 android:text="Version 1.0.0"
                 android:textColor="@color/text"
                 android:textSize="13sp"

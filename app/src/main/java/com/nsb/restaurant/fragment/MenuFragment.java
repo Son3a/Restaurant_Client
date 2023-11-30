@@ -8,16 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -29,16 +23,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.nsb.restaurant.R;
 import com.nsb.restaurant.activity.admin.AddFoodActivity;
 import com.nsb.restaurant.activity.user.FoodDetailActivity;
 import com.nsb.restaurant.adapter.FoodToOrderAdapter;
 import com.nsb.restaurant.adapter.PhotoAdapter;
+import com.nsb.restaurant.databinding.FragmentMenu1Binding;
 import com.nsb.restaurant.listener.CategoryListener;
 import com.nsb.restaurant.listener.FoodListener;
 import com.nsb.restaurant.model.CategoryModel;
 import com.nsb.restaurant.model.FoodModel;
 import com.nsb.restaurant.util.Constant;
+import com.nsb.restaurant.util.LoadingDialog;
+import com.nsb.restaurant.util.PreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,30 +45,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import me.relex.circleindicator.CircleIndicator3;
-
 public class MenuFragment extends Fragment implements CategoryListener, FoodListener {
-    private View menuView;
-    private RecyclerView rcvListFoods;
+    private FragmentMenu1Binding binding;
     private FoodToOrderAdapter foodAdapter;
     private List<FoodModel> listFoods, listFoodBestSeller;
-    private ImageView buttonFindJob, btnAddFood;
-    private EditText textDataSearch;
-    private ViewPager2 viewPager2;
-    private CircleIndicator3 indicator3;
-    private LinearLayout layoutBestSeller;
-    private TextView textTitle;
-    private SwipeRefreshLayout layoutRefresh;
-    private ProgressBar pbLoading;
+    private PreferenceManager preferenceManager;
+    private LoadingDialog loadingDialog;
 
     private Handler handler = new Handler();
     private Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if (viewPager2.getCurrentItem() == listFoodBestSeller.size() - 1) {
-                viewPager2.setCurrentItem(0);
+            if (listFoodBestSeller != null && listFoodBestSeller.size() == 0) {
+                binding.layoutBestSeller.setVisibility(View.GONE);
             } else {
-                viewPager2.setCurrentItem(viewPager2.getCurrentItem() + 1);
+                binding.layoutBestSeller.setVisibility(View.VISIBLE);
+                if (binding.viewPager2.getCurrentItem() == listFoodBestSeller.size() - 1) {
+                    binding.viewPager2.setCurrentItem(0);
+                } else {
+                    binding.viewPager2.setCurrentItem(binding.viewPager2.getCurrentItem() + 1);
+                }
             }
         }
     };
@@ -80,86 +72,82 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        menuView = inflater.inflate(R.layout.fragment_menu1, container, false);
+        binding = FragmentMenu1Binding.inflate(getLayoutInflater());
 
         init();
         setEvent();
 
-        return menuView;
+        return binding.getRoot();
     }
 
     private void init() {
-        rcvListFoods = menuView.findViewById(R.id.rcvListFoods);
-        viewPager2 = menuView.findViewById(R.id.viewPager2);
-        indicator3 = menuView.findViewById(R.id.circleIndicator);
+        preferenceManager = new PreferenceManager(getContext());
+        loadingDialog = new LoadingDialog(getContext());
         listFoods = new ArrayList<>();
         foodAdapter = new FoodToOrderAdapter(listFoods, this);
-        rcvListFoods.setAdapter(foodAdapter);
-        buttonFindJob = menuView.findViewById(R.id.imageSearch);
-        textDataSearch = menuView.findViewById(R.id.textSearch);
         listFoodBestSeller = new ArrayList<>();
-        layoutBestSeller = menuView.findViewById(R.id.layoutBestSeller);
-        textTitle = menuView.findViewById(R.id.textTitle);
-        layoutRefresh = menuView.findViewById(R.id.layoutRefresh);
-        pbLoading = menuView.findViewById(R.id.pbLoading);
-        btnAddFood = menuView.findViewById(R.id.imageAddFood);
+        binding.rcvListFoods.setAdapter(foodAdapter);
     }
 
     private void setEvent() {
         findFood();
         clickFindJob();
-        getBestSeller();
         refreshData();
         gotoAddFood();
+        setStateBottomSheet();
+    }
+
+    private void setStateBottomSheet() {
+        Constant.setTransparentBottomSheet(getContext(), binding.rcvListFoods);
+        Constant.setTransparentBottomSheet(getContext(), binding.layoutBestSeller);
+        Constant.setTransparentBottomSheet(getContext(), binding.rcvListFoods);
     }
 
     private void refreshData() {
-        layoutRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        binding.layoutRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                binding.layoutRefresh.setRefreshing(false);
+                loadingDialog.showDialog();
                 findFood();
             }
         });
     }
 
     private void gotoAddFood() {
-        btnAddFood.setOnClickListener(v -> {
+        binding.imageAddFood.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), AddFoodActivity.class));
         });
     }
 
     private void setViewPagerAdapter(List<FoodModel> listFood) {
-        if (listFood.size() == 0) {
-            layoutBestSeller.setVisibility(View.GONE);
-        } else {
-            PhotoAdapter adapter = new PhotoAdapter(getActivity(), listFood);
-            viewPager2.setAdapter(adapter);
-            indicator3.setViewPager(viewPager2);
+        binding.layoutBestSeller.setVisibility(View.VISIBLE);
+        PhotoAdapter adapter = new PhotoAdapter(getActivity(), listFood);
+        binding.viewPager2.setAdapter(adapter);
+        binding.circleIndicator.setViewPager(binding.viewPager2);
 
-            viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-                @Override
-                public void onPageSelected(int position) {
-                    super.onPageSelected(position);
-                    handler.removeCallbacks(runnable);
-                    handler.postDelayed(runnable, 5000);
-                }
-            });
-        }
+        binding.viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                handler.removeCallbacks(runnable);
+                handler.postDelayed(runnable, 5000);
+            }
+        });
     }
 
     private void clickFindJob() {
-        buttonFindJob.setOnClickListener(v -> {
-            pbLoading.setVisibility(View.VISIBLE);
-            buttonFindJob.setVisibility(View.GONE);
-            Constant.hideKeyboardFrom(getActivity(), textDataSearch);
+        binding.imageSearch.setOnClickListener(v -> {
+            loadingDialog.showDialog();
+            Constant.hideKeyboardFrom(getActivity(), binding.textSearch);
             findFood();
         });
 
-        textDataSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
+        binding.textSearch.setOnEditorActionListener((textView, i, keyEvent) -> {
             if (i == EditorInfo.IME_ACTION_SEARCH) {
-                pbLoading.setVisibility(View.VISIBLE);
-                buttonFindJob.setVisibility(View.GONE);
-                Constant.hideKeyboardFrom(getActivity(), textDataSearch);
+                loadingDialog.showDialog();
+                Constant.hideKeyboardFrom(getActivity(), binding.textSearch);
                 findFood();
                 return true;
             }
@@ -169,10 +157,11 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
 
     private void findFood() {
         try {
-            if (textDataSearch.getText() == null || textDataSearch.getText().toString().equals("")) {
+            if (binding.textSearch.getText() == null || binding.textSearch.getText().toString().equals("")) {
                 callAPIFindFood("");
+                getBestSeller();
             } else {
-                callAPIFindFood(textDataSearch.getText().toString().trim());
+                callAPIFindFood(binding.textSearch.getText().toString().trim());
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -183,7 +172,6 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
     private void callAPIFindFood(String data) throws JSONException {
         Log.d("FindFood", "starting...");
         String url = Constant.URL_DEV + "/food/find-food";
-
         RequestQueue queue = Volley.newRequestQueue(getActivity());
 
         listFoods.clear();
@@ -212,33 +200,33 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
                                 priceSaleOff
                         ));
 
-                        Log.d("Food", listFoods.get(i).getImage());
-                    }
-                    if (!data.equals("")) {
-                        layoutBestSeller.setVisibility(View.GONE);
-                        textTitle.setText("Kết quả tìm kiếm: " + data);
-                    } else {
-                        layoutBestSeller.setVisibility(View.VISIBLE);
-                        textTitle.setText("Gợi ý món ăn");
-                    }
-                    layoutRefresh.setRefreshing(false);
-                    foodAdapter.notifyDataSetChanged();
 
-                    pbLoading.setVisibility(View.GONE);
-                    buttonFindJob.setVisibility(View.VISIBLE);
+                    }
+                    Log.d("Food", data);
+                    loadingDialog.hideDialog();
+                    if (listFoods.size() == 0) {
+                        binding.textTitle.setText("Món ăn không tồn tại!");
+                    } else {
+                        binding.layoutFood.setVisibility(View.VISIBLE);
+                        if(!data.isEmpty()){
+                            binding.textTitle.setText("Kết quả tìm kiếm");
+                        } else {
+                            binding.textTitle.setText("Gợi ý món ăn");
+                        }
+                    }
+                    binding.layoutRefresh.setRefreshing(false);
+                    foodAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     Log.d("Error", e.getMessage());
-                    pbLoading.setVisibility(View.GONE);
-                    buttonFindJob.setVisibility(View.VISIBLE);
+                    loadingDialog.hideDialog();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("Error", error.toString());
-                pbLoading.setVisibility(View.GONE);
-                buttonFindJob.setVisibility(View.VISIBLE);
+                loadingDialog.hideDialog();
             }
         }) {
 
@@ -260,6 +248,7 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
         String url = Constant.URL_DEV + "/food/get-top-foods/" + 60;
         //progressBar.setVisibility(View.VISIBLE);
         RequestQueue queue = Volley.newRequestQueue(getActivity());
+        listFoodBestSeller.clear();
 
         JsonObjectRequest sr = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -284,7 +273,13 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
                         ));
                         Log.d("Food", listFoodBestSeller.get(i).getImage());
                     }
-                    setViewPagerAdapter(listFoodBestSeller);
+                    Log.d("BestSeller", listFoodBestSeller.size() + "");
+                    loadingDialog.hideDialog();
+                    if (listFoodBestSeller.size() == 0) {
+                        binding.layoutBestSeller.setVisibility(View.GONE);
+                    } else {
+                        setViewPagerAdapter(listFoodBestSeller);
+                    }
 
                 } catch (JSONException e) {
                     Log.d("Error", e.getMessage());
@@ -295,6 +290,7 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("Error", error.toString());
+                loadingDialog.hideDialog();
                 //progressBar.setVisibility(View.GONE);
             }
         }) {
@@ -341,4 +337,12 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
     public void onRemove(FoodModel foodModel) {
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("Menu", "on Start");
+    }
+
+
 }

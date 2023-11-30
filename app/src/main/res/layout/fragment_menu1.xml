@@ -32,7 +32,7 @@
                 android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
-                android:paddingStart="10dp"
+                android:paddingStart="20dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/text"
                 android:textCursorDrawable="@drawable/custom_cursor_text"
@@ -72,6 +72,7 @@
             android:layout_toRightOf="@+id/layoutSearch"
             android:layout_weight="0.05"
             android:src="@drawable/ic_add_food"
+            android:visibility="gone"
             app:tint="@color/primary" />
     </LinearLayout>
 
@@ -94,7 +95,8 @@
                 android:id="@+id/layoutContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <LinearLayout
                     android:id="@+id/layoutBestSeller"
@@ -102,7 +104,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="15dp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -128,26 +131,35 @@
                         app:ci_drawable="@drawable/background_indicator" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textTitle"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/layoutFood"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layoutBestSeller"
                     android:layout_marginStart="10dp"
-                    android:text="Gợi ý món ăn"
-                    android:textColor="@color/primary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
+                    android:visibility="gone">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcvListFoods"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textTitle"
-                    android:layout_margin="10dp"
-                    android:layout_marginBottom="30dp"
-                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="2" />
+                    <TextView
+                        android:id="@+id/textTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gợi ý món ăn"
+                        android:textColor="@color/primary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcvListFoods"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textTitle"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="40dp"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="2" />
+                </RelativeLayout>
 
             </RelativeLayout>
         </androidx.core.widget.NestedScrollView>

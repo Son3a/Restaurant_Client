@@ -61,39 +61,39 @@ public class MainAdminActivity extends AppCompatActivity {
     }
 
     private void setBottomNavigationView() {
-        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constant.IS_BOOKING) == true) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, bookingFragment).commit();
-            return;
-        }
-        getSupportFragmentManager().beginTransaction().add(R.id.container, infoFragment, "info").commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, bookingFragment, "info").hide(bookingFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, menuFragment, "info").hide(menuFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, accountFragment, "info").hide(accountFragment).commit();
-        binding.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.menu_home:
-                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(infoFragment).commit();
-                        activeFragment = infoFragment;
-                        return true;
-                    case R.id.menu_booking:
-                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(bookingFragment).commit();
-                        activeFragment = bookingFragment;
-                        return true;
-                    case R.id.menu_food:
-                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(menuFragment).commit();
-                        activeFragment = menuFragment;
-                        return true;
-                    case R.id.menu_account:
-                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(accountFragment).commit();
-                        activeFragment = accountFragment;
-                        return true;
-                }
-
-                return false;
-            }
-        });
+//        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constant.IS_BOOKING) == true) {
+//            getSupportFragmentManager().beginTransaction().replace(R.id.container, bookingFragment).commit();
+//            return;
+//        }
+//        getSupportFragmentManager().beginTransaction().add(R.id.container, infoFragment, "info").commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.container, bookingFragment, "info").hide(bookingFragment).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.container, menuFragment, "info").hide(menuFragment).commit();
+//        getSupportFragmentManager().beginTransaction().add(R.id.container, accountFragment, "info").hide(accountFragment).commit();
+//        binding.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.menu_home:
+//                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(infoFragment).commit();
+//                        activeFragment = infoFragment;
+//                        return true;
+//                    case R.id.menu_booking:
+//                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(bookingFragment).commit();
+//                        activeFragment = bookingFragment;
+//                        return true;
+//                    case R.id.menu_food:
+//                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(menuFragment).commit();
+//                        activeFragment = menuFragment;
+//                        return true;
+//                    case R.id.menu_account:
+//                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(accountFragment).commit();
+//                        activeFragment = accountFragment;
+//                        return true;
+//                }
+//
+//                return false;
+//            }
+//        });
     }
 
     private void clickScanner() {

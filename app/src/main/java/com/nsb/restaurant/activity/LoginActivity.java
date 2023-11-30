@@ -36,11 +36,6 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         super.onCreate(savedInstanceState);
         setContentView(binding.getRoot());
-        preferenceManager = new PreferenceManager(LoginActivity.this);
-        if (preferenceManager.getBoolean(Constant.IS_SIGNED_IN)) {
-            finish();
-            startActivity(new Intent(getApplicationContext(), MainUserActivity.class));
-        }
 
         gotoSignUp();
         forgotPassword();

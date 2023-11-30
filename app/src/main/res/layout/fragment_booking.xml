@@ -39,6 +39,7 @@
         android:layout_below="@+id/layoutHeader">
 
         <RelativeLayout
+            android:id="@+id/layoutContent"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -262,7 +263,7 @@
                 android:backgroundTint="@color/primary"
                 android:text="Đặt bàn ngay"
                 android:textColor="@color/white"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="60dp"
                 app:cornerRadius="20dp" />
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>

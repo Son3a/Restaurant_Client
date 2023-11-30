@@ -4,35 +4,41 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationBarView;
 import com.journeyapps.barcodescanner.CaptureActivity;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 import com.nsb.restaurant.R;
+import com.nsb.restaurant.adapter.MainUserAdapter;
 import com.nsb.restaurant.databinding.ActivityMainBinding;
 import com.nsb.restaurant.fragment.AccountFragment;
 import com.nsb.restaurant.fragment.BookingFragment;
 import com.nsb.restaurant.fragment.InfoRestaurantFragment;
 import com.nsb.restaurant.fragment.MenuFragment;
 import com.nsb.restaurant.fragment.OrderFoodFragment;
+import com.nsb.restaurant.listener.EventKeyboard;
 import com.nsb.restaurant.util.Constant;
 
 
 public class MainUserActivity extends AppCompatActivity {
-
-    ActivityMainBinding binding;
-    private InfoRestaurantFragment infoFragment;
-    private BookingFragment bookingFragment;
-    private MenuFragment menuFragment;
-    private AccountFragment accountFragment;
-    private OrderFoodFragment orderFoodFragment;
-    private Fragment activeFragment;
+    public static ActivityMainBinding binding;
+    private MainUserAdapter mainUserAcAdapter;
+//    private InfoRestaurantFragment infoFragment;
+//    private BookingFragment bookingFragment;
+//    private MenuFragment menuFragment;
+//    private AccountFragment accountFragment;
+//    private OrderFoodFragment orderFoodFragment;
+//    private Fragment activeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,58 +52,57 @@ public class MainUserActivity extends AppCompatActivity {
     }
 
     private void init() {
-        infoFragment = new InfoRestaurantFragment();
-        bookingFragment = new BookingFragment();
-        menuFragment = new MenuFragment();
-        accountFragment = new AccountFragment();
-        orderFoodFragment = new OrderFoodFragment();
-        activeFragment = new InfoRestaurantFragment();
+        mainUserAcAdapter = new MainUserAdapter(MainUserActivity.this);
+        binding.viewPager2.setAdapter(mainUserAcAdapter);
+        binding.viewPager2.setUserInputEnabled(false);
+        binding.viewPager2.setOffscreenPageLimit(4);
+
     }
 
     private void setEvent() {
         clickScanner();
-        setStateBottomSheet();
+        hideKeyBottomSheet();
     }
 
-    private void setStateBottomSheet() {
-        binding.container.setOnClickListener(v -> {
-            binding.bottomNavigationView.setBackgroundResource(R.drawable.background_bottom_sheet_transparent);
+    private void hideKeyBottomSheet() {
+        Constant.eventKeyBoard(binding.getRoot(), new EventKeyboard() {
+            @Override
+            public void showKeyboard() {
+                binding.bottomNavigationView.setVisibility(View.GONE);
+                binding.cvScanQRCode.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void hideKeyboard() {
+                binding.bottomNavigationView.setVisibility(View.VISIBLE);
+                binding.cvScanQRCode.setVisibility(View.VISIBLE);
+            }
         });
     }
 
     private void setBottomNavigationView() {
-        binding.bottomNavigationView.setBackgroundResource(R.drawable.background_bottom_sheet);
-        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey(Constant.IS_BOOKING) == true) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container, bookingFragment).commit();
-            return;
-        }
-        getSupportFragmentManager().beginTransaction().add(R.id.container, infoFragment, "info").commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, bookingFragment, "info").hide(bookingFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, menuFragment, "info").hide(menuFragment).commit();
-        getSupportFragmentManager().beginTransaction().add(R.id.container, accountFragment, "info").hide(accountFragment).commit();
         binding.bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                MainUserActivity.binding.bottomNavigationView.setBackgroundResource(R.drawable.background_bottom_sheet_transparent);
+                MainUserActivity.binding.bottomNavigationView.setItemIconTintList(ColorStateList.valueOf(ContextCompat.getColor(MainUserActivity.this, R.color.primary)));
+                MainUserActivity.binding.cvScanQRCode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainUserActivity.this, R.color.primary)));
+
                 switch (item.getItemId()) {
                     case R.id.menu_home:
-                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(infoFragment).commit();
-                        activeFragment = infoFragment;
-                        return true;
-                    case R.id.menu_booking:
-                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(bookingFragment).commit();
-                        activeFragment = bookingFragment;
-                        return true;
+                        binding.viewPager2.setCurrentItem(0, false);
+                        break;
                     case R.id.menu_food:
-                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(menuFragment).commit();
-                        activeFragment = menuFragment;
-                        return true;
+                        binding.viewPager2.setCurrentItem(1, false);
+                        break;
+                    case R.id.menu_booking:
+                        binding.viewPager2.setCurrentItem(2, false);
+                        break;
                     case R.id.menu_account:
-                        getSupportFragmentManager().beginTransaction().hide(activeFragment).show(accountFragment).commit();
-                        activeFragment = accountFragment;
-                        return true;
+                        binding.viewPager2.setCurrentItem(3, false);
+                        break;
                 }
-
-                return false;
+                return true;
             }
         });
     }

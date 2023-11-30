@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activity.SplashActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/textNameRestaurant"
+        android:layout_marginBottom="20dp"
+        app:cardCornerRadius="20dp">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/image_background" />
+    </androidx.cardview.widget.CardView>
+
+    <com.nsb.restaurant.custom_text.ErasTextView
+        android:id="@+id/textNameRestaurant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Bali Restaurant"
+        android:textColor="@color/black"
+        android:textSize="30sp" />
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/pbLoading"
+        style="@style/SpinKitView.CubeGrid"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/textNameRestaurant"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        app:SpinKit_Color="@color/primary" />
+
+    <TextView
+        android:id="@+id/textCopyRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:text="Developed by SonBa"
+        android:textColor="@color/text"
+        android:textSize="16sp" />
+
+</RelativeLayout>

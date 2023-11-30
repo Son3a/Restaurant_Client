@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,14 +21,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.nsb.restaurant.R;
+import com.nsb.restaurant.activity.user.MainUserActivity;
 import com.nsb.restaurant.adapter.ViewPagerInfoAdapter;
+import com.nsb.restaurant.databinding.FragmentInfoRestaurantBinding;
+import com.nsb.restaurant.util.Constant;
 
 public class InfoRestaurantFragment extends Fragment {
-
-    private View infoRestaurantView;
-    private AppBarLayout appBar;
-    private Toolbar toolbar;
-    private TextView textHotLine;
+    private FragmentInfoRestaurantBinding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,14 +37,14 @@ public class InfoRestaurantFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        infoRestaurantView = inflater.inflate(R.layout.fragment_info_restaurant, container, false);
+        binding = FragmentInfoRestaurantBinding.inflate(getLayoutInflater());
 
         init();
 
         setEvent();
         setStateAppBar();
 
-        return infoRestaurantView;
+        return binding.getRoot();
     }
 
     @Override
@@ -52,31 +52,34 @@ public class InfoRestaurantFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
     }
 
-    private void setEvent() {
-        call();
+    private void init() {
+
     }
 
-    private void init(){
-        textHotLine = infoRestaurantView.findViewById(R.id.textHotLine);
-        appBar = infoRestaurantView.findViewById(R.id.appBar);
-        toolbar = infoRestaurantView.findViewById(R.id.toolBar);
+    private void setEvent() {
+        call();
+        setStateBottomSheet();
+    }
+
+    private void setStateBottomSheet() {
+        Constant.setTransparentBottomSheet(getContext(), binding.layoutContent);
     }
 
     private void setStateAppBar() {
-        appBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+        binding.appBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
             if (abs(verticalOffset) - appBarLayout.getTotalScrollRange() == 0) {
-                toolbar.setVisibility(View.VISIBLE);
+                binding.toolBar.setVisibility(View.VISIBLE);
             } else if (verticalOffset == 0) {
 
             } else {
-                toolbar.setVisibility(View.INVISIBLE);
+                binding.toolBar.setVisibility(View.INVISIBLE);
             }
         });
     }
 
     private void call() {
-        textHotLine.setOnClickListener(v -> {
-            String phone = textHotLine.getText().toString();
+        binding.textHotLine.setOnClickListener(v -> {
+            String phone = binding.textHotLine.getText().toString();
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null));
             startActivity(intent);
 
