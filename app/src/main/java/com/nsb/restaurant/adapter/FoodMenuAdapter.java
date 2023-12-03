@@ -2,7 +2,6 @@ package com.nsb.restaurant.adapter;
 
 import static com.nsb.restaurant.util.Constant.formatSalary;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,33 +15,30 @@ import com.nsb.restaurant.listener.FoodListener;
 import com.nsb.restaurant.model.FoodModel;
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.List;
 
-public class FoodToOrderAdapter extends RecyclerView.Adapter<FoodToOrderAdapter.FoodToOrderHolder> {
+public class FoodMenuAdapter extends RecyclerView.Adapter<FoodMenuAdapter.FoodMenuHolder> {
     private final List<FoodModel> foodModelList;
     private final FoodListener listener;
 
-    public FoodToOrderAdapter(List<FoodModel> foodModelList, FoodListener listener) {
+    public FoodMenuAdapter(List<FoodModel> foodModelList, FoodListener listener) {
         this.foodModelList = foodModelList;
         this.listener = listener;
     }
 
     @NonNull
     @Override
-    public FoodToOrderHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemFoodCategoryBinding itemLayoutFoodBinding = ItemFoodCategoryBinding.inflate(
+    public FoodMenuAdapter.FoodMenuHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        ItemFoodToOrderBinding itemLayoutFoodBinding = ItemFoodToOrderBinding.inflate(
                 LayoutInflater.from(parent.getContext()),
                 parent,
                 false
         );
-        return new FoodToOrderHolder(itemLayoutFoodBinding);
+        return new FoodMenuHolder(itemLayoutFoodBinding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FoodToOrderHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FoodMenuHolder holder, int position) {
         holder.setData(foodModelList.get(position));
     }
 
@@ -51,10 +47,10 @@ public class FoodToOrderAdapter extends RecyclerView.Adapter<FoodToOrderAdapter.
         return foodModelList.size();
     }
 
-    class FoodToOrderHolder extends RecyclerView.ViewHolder {
-        ItemFoodCategoryBinding binding;
+    class FoodMenuHolder extends RecyclerView.ViewHolder {
+        ItemFoodToOrderBinding binding;
 
-        FoodToOrderHolder(ItemFoodCategoryBinding itemLayoutFoodBinding) {
+        FoodMenuHolder(ItemFoodToOrderBinding itemLayoutFoodBinding) {
             super(itemLayoutFoodBinding.getRoot());
             binding = itemLayoutFoodBinding;
         }

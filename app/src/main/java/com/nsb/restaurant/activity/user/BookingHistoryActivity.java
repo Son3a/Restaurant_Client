@@ -68,7 +68,7 @@ public class BookingHistoryActivity extends AppCompatActivity implements Booking
         gotoBooking();
     }
 
-    private void gotoBooking(){
+    private void gotoBooking() {
 //        binding.buttonBooking.setOnClickListener(v->{
 //            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -142,7 +142,7 @@ public class BookingHistoryActivity extends AppCompatActivity implements Booking
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("authorization", "Bearer " + preferenceManager.getString(Constant.TOKEN));
+                headers.put("authorization", preferenceManager.getString(Constant.TOKEN));
                 return headers;
             }
         };

@@ -8,20 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 
 import com.android.volley.AuthFailureError;
@@ -33,13 +26,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.nsb.restaurant.R;
-import com.nsb.restaurant.activity.user.MainUserActivity;
 import com.nsb.restaurant.activity.user.OrderFoodActivity;
 import com.nsb.restaurant.databinding.BottomAmountPeopleBinding;
 import com.nsb.restaurant.databinding.FragmentBookingBinding;
 import com.nsb.restaurant.model.BookingModel;
 import com.nsb.restaurant.util.Constant;
+import com.nsb.restaurant.util.LoadingDialog;
 import com.nsb.restaurant.util.PreferenceManager;
 
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
@@ -71,7 +63,8 @@ public class BookingFragment extends Fragment {
     public static List<String> idTables;
     public static String stringNote;
     public static String nameTable = "";
-    PreferenceManager preferenceManager;
+    private PreferenceManager preferenceManager;
+    private LoadingDialog loadingDialog;
 
     @Nullable
     @Override
@@ -89,6 +82,7 @@ public class BookingFragment extends Fragment {
         preferenceManager = new PreferenceManager(getActivity());
         setBottomSheetAmountPeople();
         idTables = new ArrayList<>();
+        loadingDialog = new LoadingDialog(getContext());
     }
 
     private void setEvent() {
@@ -114,7 +108,7 @@ public class BookingFragment extends Fragment {
     private void bookingClick() {
         binding.buttonBooking.setOnClickListener(v -> {
             try {
-                if (binding.textAmount != null && !binding.textAmount.getText().toString().equals("")) {
+                if (bindingAmountPeople.textAmountPeople != null && !bindingAmountPeople.textAmountPeople.getText().toString().equals("")) {
                     getTableToBooking();
                 } else {
                     Toast.makeText(getActivity(), "Type num of people", Toast.LENGTH_SHORT).show();
@@ -130,12 +124,11 @@ public class BookingFragment extends Fragment {
         String time = dateBooking + " " + timeBooking;
         Log.d("Time", time);
         String url = Constant.URL_DEV + "/booking/get-tables-to-booking";
-
-//        pbLoading.setVisibility(View.VISIBLE);
+        loadingDialog.showDialog();
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         JSONObject jsonRequest = new JSONObject();
-        jsonRequest.put("amountPeople", binding.textAmount.getText().toString());
+        jsonRequest.put("amountPeople", bindingAmountPeople.textAmountPeople.getText().toString());
         jsonRequest.put("time", time);
 
         JsonObjectRequest sr = new JsonObjectRequest(Request.Method.POST, url, jsonRequest, new Response.Listener<JSONObject>() {
@@ -150,7 +143,7 @@ public class BookingFragment extends Fragment {
 
                     nameTable = "";
                     idTables.clear();
-                    for(int i = 0; i < jsonArray.length();i++){
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         nameTable += jsonObject.getString("tenban").trim() + " ";
                         idTables.add(jsonArray.getJSONObject(i).getString("maban"));
@@ -161,7 +154,7 @@ public class BookingFragment extends Fragment {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                     Date date = new Date();
 
-                    BookingModel bookingModel =  new BookingModel(
+                    BookingModel bookingModel = new BookingModel(
                             time,
                             numOfPeople,
                             Constant.WAITING_BOOKING_TABLE,
@@ -171,6 +164,8 @@ public class BookingFragment extends Fragment {
                             binding.textEmail.getText().toString(),
                             nameTable);
 
+                    loadingDialog.hideDialog();
+
                     Intent intent = new Intent(getActivity(), OrderFoodActivity.class);
                     intent.putExtra(Constant.BOOKING_OBJECT, bookingModel);
                     startActivity(intent);
@@ -178,12 +173,14 @@ public class BookingFragment extends Fragment {
                     Log.d("IDBAN", binding.textName.getText().toString());
                 } catch (JSONException e) {
                     Log.d("Error", e.getMessage());
+                    loadingDialog.hideDialog();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("Error", error.toString());
+                loadingDialog.hideDialog();
+                Log.d("Error1", error.toString());
             }
         }) {
 
@@ -194,11 +191,15 @@ public class BookingFragment extends Fragment {
                 return headers;
             }
 
+            @Override
+            public Priority getPriority() {
+                return Priority.IMMEDIATE;
+            }
 
         };
         sr.setRetryPolicy(new DefaultRetryPolicy(
-                0,
-                -1,
+                DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
@@ -248,8 +249,15 @@ public class BookingFragment extends Fragment {
         if (minute.length() <= 1) {
             minute = "0" + minute;
         }
+        if (day.length() <= 1) {
+            day = "0" + day;
+        }
+        if (month.length() <= 1) {
+            month = "0" + month;
+        }
+
         binding.textTimeBooking.setText(hour + ":" + minute);
-        binding.textTimeBooking.setText(day + " tháng " + month);
+        binding.textDateBooking.setText(day + " tháng " + month);
         timeBooking = hour + ":" + minute;
         dateBooking = year + "/" + month + "/" + day;
     }
@@ -264,7 +272,7 @@ public class BookingFragment extends Fragment {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                 @Override
                 public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                    if (checkTime(day, month + 1, year)){
+                    if (checkTime(day, month + 1, year)) {
                         binding.textDateBooking.setText(day + " tháng " + (month + 1));
                         dateBooking = year + "/" + (month + 1) + "/" + day;
                     } else {

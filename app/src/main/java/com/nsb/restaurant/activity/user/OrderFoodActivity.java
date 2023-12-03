@@ -39,6 +39,7 @@ import com.nsb.restaurant.model.BookingModel;
 import com.nsb.restaurant.model.CategoryModel;
 import com.nsb.restaurant.model.FoodModel;
 import com.nsb.restaurant.util.Constant;
+import com.nsb.restaurant.util.LoadingDialog;
 import com.nsb.restaurant.util.PreferenceManager;
 
 import org.json.JSONArray;
@@ -57,8 +58,8 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class OrderFoodActivity extends AppCompatActivity implements CategoryListener, FoodListener {
     private static ActivityOrderFoodBinding binding;
-    private List<FoodModel> foodModelListToOrder;
-    public static List<FoodModel> foodModelListOrdering;
+    private List<FoodModel> foodModelListToOrder;// danh sach mon an theo loai mon
+    public static List<FoodModel> foodModelListOrdering;// danh sach mon an se duoc dat
     private List<CategoryModel> categoryModelList;
     private CategoryCompactAdapter categoryCompactAdapter;
     private FoodToOrderAdapter foodToOrderAdapter;
@@ -72,10 +73,9 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
     private TextView textVND;
     private List<Boolean> listSelected;
     private static String accessToken;
-    public static List<FoodModel> listFoodBooked; //Ds món ăn được đặt thêm
-    public static List<FoodModel> listFoodFirst; //Ds món ăn đã đặt trước đó
-    private List<FoodModel> listFoodChanged; //Ds món ăn bị thay đổi
-    public static boolean isAddFood = false;
+    private LoadingDialog loadingDialog;
+
+    //    public static boolean isAddFood = false;
     private PreferenceManager preferenceManager;
     public static String idTable = "";
     public static String idBooking = "";
@@ -93,6 +93,7 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
     }
 
     private void init() {
+        loadingDialog = new LoadingDialog(OrderFoodActivity.this);
         setFoodToOrderAdapter();
         setFoodOrderingAdapter();
         setCategoryAdapter();
@@ -103,9 +104,6 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
 
         bottomPayment = new BottomSheetDialog(OrderFoodActivity.this);
         bottomPayment.setContentView(bottomPaymentView);
-        listFoodBooked = new ArrayList<>();
-        listFoodFirst = new ArrayList<>();
-        listFoodChanged = new ArrayList<>();
         preferenceManager = new PreferenceManager(OrderFoodActivity.this);
     }
 
@@ -131,19 +129,19 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
     }
 
     private void checkActivity() {
-        if (getIntent().getExtras().containsKey(Constant.ID_BOOKING)) {
-            isAddFood = true;
-            preferenceManager.putBoolean(Constant.IS_ADD_FOOD, true);
-            binding.textSkip.setVisibility(View.GONE);
-            binding.textNotify.setText("Bạn hãy đặt thêm món tại đây");
-            binding.textNotify.setVisibility(View.GONE);
-            getBookingAndFood(getIntent().getStringExtra(Constant.ID_BOOKING));
-            idBooking = getIntent().getStringExtra(Constant.ID_BOOKING);
+//        if (getIntent().getExtras().containsKey(Constant.ID_BOOKING)) {
+//            isAddFood = true;
+//            preferenceManager.putBoolean(Constant.IS_ADD_FOOD, true);
+//            binding.textSkip.setVisibility(View.GONE);
+//            binding.textNotify.setText("Bạn hãy đặt thêm món tại đây");
+//            binding.textNotify.setVisibility(View.GONE);
+//            getBookingAndFood(getIntent().getStringExtra(Constant.ID_BOOKING));
+//            idBooking = getIntent().getStringExtra(Constant.ID_BOOKING);
 
-        } else {
-            isAddFood = false;
-            preferenceManager.putBoolean(Constant.IS_ADD_FOOD, false);
-        }
+//        } else {
+//            isAddFood = false;
+//            preferenceManager.putBoolean(Constant.IS_ADD_FOOD, false);
+//        }
     }
 
     private void booking() throws JSONException {
@@ -192,7 +190,7 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("authorization", "Bearer " + preferenceManager.getString(Constant.TOKEN));
+                headers.put("authorization", preferenceManager.getString(Constant.TOKEN));
                 return headers;
             }
         };
@@ -205,22 +203,18 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
 
     private void confirmDeposit() {
         buttonConfirm.setOnClickListener(v -> {
+            loadingDialog.showDialog();
             int deposit = (int) (0.3 * totalMoneyPay);
             String stringDeposit = textDeposit.getText().toString().replace(".", "").trim();
             if (Integer.parseInt(stringDeposit) < deposit) {
                 Toast.makeText(this, "Số tiền cọc phải lớn hơn hoặc bằng 30% tổng tiền", Toast.LENGTH_SHORT).show();
                 textDeposit.setText(Constant.formatSalary(String.valueOf(deposit)));
             } else if (Integer.parseInt(stringDeposit) >= totalMoneyPay) {
-
                 depositMoney = totalMoneyPay;
-                foodModelListOrdering.clear();
-                foodModelListOrdering = new ArrayList<>(listFoodBooked);
                 getAccessToken();
             } else {
 
                 depositMoney = Integer.valueOf(stringDeposit);
-                foodModelListOrdering.clear();
-                foodModelListOrdering = new ArrayList<>(listFoodBooked);
                 getAccessToken();
             }
 
@@ -271,41 +265,38 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
     }
 
     private void checkFoodChange() {
-        listFoodChanged.clear();
-        boolean isSame;
-        for (int i = 0; i < listFoodFirst.size(); i++) {
-            isSame = false;
-            for (int j = 0; j < foodModelListOrdering.size(); j++) {
-                if (listFoodFirst.get(i).getId().equals(foodModelListOrdering.get(j).getId())) {
-                    isSame = true;
-                    int num = listFoodFirst.get(i).getNumOfFood() - foodModelListOrdering.get(j).getNumOfFood();
-                    if (num > 0) {
-                        listFoodChanged.add(new FoodModel(listFoodFirst.get(i).getId(), num));
-                    }
-                    break;
-                }
-            }
-            if (!isSame) {
-                listFoodChanged.add(new FoodModel(listFoodFirst.get(i).getId(), 0));
-            }
-        }
-
-        for (int i = 0; i < listFoodChanged.size(); i++) {
-            Log.d("FoodChange", listFoodChanged.get(i).getName() + "  " + listFoodChanged.get(i).getNumOfFood());
-        }
+//        listFoodChanged.clear();
+//        boolean isSame;
+//        for (int i = 0; i < listFoodFirst.size(); i++) {
+//            isSame = false;
+//            for (int j = 0; j < foodModelListOrdering.size(); j++) {
+//                if (listFoodFirst.get(i).getId().equals(foodModelListOrdering.get(j).getId())) {
+//                    isSame = true;
+//                    int num = listFoodFirst.get(i).getNumOfFood() - foodModelListOrdering.get(j).getNumOfFood();
+//                    if (num > 0) {
+//                        listFoodChanged.add(new FoodModel(listFoodFirst.get(i).getId(), num));
+//                    }
+//                    break;
+//                }
+//            }
+//            if (!isSame) {
+//                listFoodChanged.add(new FoodModel(listFoodFirst.get(i).getId(), 0));
+//            }
+//        }
+//
+//        for (int i = 0; i < listFoodChanged.size(); i++) {
+//            Log.d("FoodChange", listFoodChanged.get(i).getName() + "  " + listFoodChanged.get(i).getNumOfFood());
+//        }
     }
 
     private void openBottomPayment() {
         binding.textPay.setOnClickListener(v -> {
-
             checkFoodChange();
-            if (listFoodChanged.size() != 0) {
-                if (getIntent().getExtras().containsKey(Constant.ID_BOOKING)) {
-                    try {
-                        changeNumOfFood(getIntent().getStringExtra(Constant.ID_BOOKING));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            if (getIntent().getExtras().containsKey(Constant.ID_BOOKING)) {
+                try {
+                    changeNumOfFood(getIntent().getStringExtra(Constant.ID_BOOKING));
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -321,13 +312,13 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
         String url = Constant.URL_DEV + "/booking/add-foods-to-booking";
 
         JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < listFoodBooked.size(); i++) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("idFood", listFoodBooked.get(i).getId());
-            jsonObject.put("numOfFood", listFoodBooked.get(i).getNumOfFood());
-            jsonObject.put("price", listFoodBooked.get(i).getPrice());
-            jsonArray.put(jsonObject);
-        }
+//        for (int i = 0; i < listFoodBooked.size(); i++) {
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("idFood", listFoodBooked.get(i).getId());
+//            jsonObject.put("numOfFood", listFoodBooked.get(i).getNumOfFood());
+//            jsonObject.put("price", listFoodBooked.get(i).getPrice());
+//            jsonArray.put(jsonObject);
+//        }
 
         JSONObject jsonRequest = new JSONObject();
         jsonRequest.put("idBooking", idBooking);
@@ -352,7 +343,7 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("authorization", "Bearer " + preferenceManager.getString(Constant.TOKEN));
+                headers.put("authorization", preferenceManager.getString(Constant.TOKEN));
                 return headers;
             }
         };
@@ -362,7 +353,6 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(sr);
     }
-
 
 
     private void setStateButtonPay() {
@@ -379,53 +369,51 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
 
             @Override
             public void afterTextChanged(Editable s) {
-                Log.d("foodd1", "---------------------------------------");
-
-                for (FoodModel food1 : listFoodFirst) {
-                    Log.d("foodd1", "first: " + food1.toString());
-                }
-
-                for (FoodModel food1 : foodModelListOrdering) {
-                    Log.d("foodd1", "ordering: " + food1.toString());
-                }
-
                 if (foodModelListOrdering.size() == 0) {
                     binding.textNotify.setVisibility(View.VISIBLE);
                 } else {
                     binding.textNotify.setVisibility(View.GONE);
                 }
 
-                if (listFoodFirst.size() != foodModelListOrdering.size()) {
-                    binding.textPay.setBackgroundResource(R.color.primary);
-                    binding.textPay.setText("Xác nhận");
-                    binding.textPay.setEnabled(true);
-                    return;
-                } else {
-                    for (FoodModel food1 : listFoodFirst) {
-                        boolean isSame = false;
-                        for (FoodModel food2 : foodModelListOrdering) {
-                            if (food1.getId().equals(food2.getId())) {
-                                isSame = true;
-                                if (food1.getNumOfFood() != food2.getNumOfFood()) {
-                                    binding.textPay.setBackgroundResource(R.color.primary);
-                                    binding.textPay.setText("Xác nhận");
-                                    binding.textPay.setEnabled(true);
-                                    return;
-                                }
-                            }
-                        }
-                        if (!isSame) {
-                            binding.textPay.setBackgroundResource(R.color.primary);
-                            binding.textPay.setText("Xác nhận");
-                            binding.textPay.setEnabled(true);
-                            return;
-                        }
-                    }
-                    Log.d("foodd1", "not change");
+                if (totalMoneyPay == 0) {
                     binding.textPay.setBackgroundResource(R.color.primary_opacity);
                     binding.textPay.setEnabled(false);
+                } else {
+                    binding.textPay.setBackgroundResource(R.color.primary);
+                    binding.textPay.setEnabled(true);
                 }
 
+//                if (listFoodFirst.size() != foodModelListOrdering.size()) {
+//                    binding.textPay.setBackgroundResource(R.color.primary);
+//                    binding.textPay.setText("Xác nhận");
+//                    binding.textPay.setEnabled(true);
+//                    return;
+//                } else {
+//                    for (FoodModel food1 : listFoodFirst) {
+//                        boolean isSame = false;
+//                        for (FoodModel food2 : foodModelListOrdering) {
+//                            if (food1.getId().equals(food2.getId())) {
+//                                isSame = true;
+//                                if (food1.getNumOfFood() != food2.getNumOfFood()) {
+//                                    binding.textPay.setBackgroundResource(R.color.primary);
+//                                    binding.textPay.setText("Xác nhận");
+//                                    binding.textPay.setEnabled(true);
+//                                    return;
+//                                }
+//                            }
+//                        }
+//                        if (!isSame) {
+//                            binding.textPay.setBackgroundResource(R.color.primary);
+//                            binding.textPay.setText("Xác nhận");
+//                            binding.textPay.setEnabled(true);
+//                            return;
+//                        }
+//                    }
+//                    Log.d("foodd1", "not change");
+//                    binding.textPay.setBackgroundResource(R.color.primary_opacity);
+//                    binding.textPay.setEnabled(false);
+//                }
+//
             }
         });
     }
@@ -439,7 +427,6 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
 
     private void setFoodOrderingAdapter() {
         foodModelListOrdering = new ArrayList<>();
-
         foodOrderingAdapter = new FoodOrderingAdapter(foodModelListOrdering, OrderFoodActivity.this, this);
         binding.recycleViewOrderingFood.setAdapter(foodOrderingAdapter);
     }
@@ -523,7 +510,7 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
     private void getFoodsByCategory(String idCategory) {
         String url = Constant.URL_DEV + "/food/get-food-by-category/" + idCategory;
         binding.pbLoadingCategories.setVisibility(View.VISIBLE);
-        binding.recycleViewListFoods.setVisibility(View.GONE);
+        binding.recycleViewListFoods.setVisibility(View.INVISIBLE);
         foodModelListToOrder.clear();
 
         RequestQueue queue = Volley.newRequestQueue(OrderFoodActivity.this);
@@ -613,6 +600,7 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
                         if (rel.equals("approve")) {
                             String link = linkObj.getString("href");
                             //redirect to this link via CCT
+                            loadingDialog.hideDialog();
                             CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
                             CustomTabsIntent customTabsIntent = builder.build();
                             finish();
@@ -621,6 +609,7 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
                     }
 
                 } catch (JSONException e) {
+                    loadingDialog.hideDialog();
                     e.printStackTrace();
                 }
             }
@@ -692,13 +681,13 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
                                 soluong
                         ));
 
-                        listFoodFirst.add(new FoodModel(
-                                jsonObject.get("MAMA").toString().trim(),
-                                jsonObject.get("TEN").toString().trim(),
-                                gia,
-                                jsonObject.get("HINH_ANH").toString().trim(),
-                                soluong
-                        ));
+//                        listFoodFirst.add(new FoodModel(
+//                                jsonObject.get("MAMA").toString().trim(),
+//                                jsonObject.get("TEN").toString().trim(),
+//                                gia,
+//                                jsonObject.get("HINH_ANH").toString().trim(),
+//                                soluong
+//                        ));
                         Log.d("Food", foodModelListOrdering.get(i).getImage());
                     }
 
@@ -728,28 +717,28 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
         queue.add(sr);
     }
 
-    private boolean isChange(FoodModel foodModel) {
-        int num = 0;
-        for (int i = 0; i < listFoodFirst.size(); i++) {
-            if (listFoodFirst.get(i).getId().equals(foodModel.getId())) {
-                num = listFoodFirst.get(i).getNumOfFood();
-            }
-        }
-        if (num == 0) {
-            return true;
-        }
-
-        for (int i = 0; i < foodModelListOrdering.size(); i++) {
-            if (foodModelListOrdering.get(i).getId().equals(foodModel.getId())) {
-                if (foodModelListOrdering.get(i).getNumOfFood() < num) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    private boolean isChange(FoodModel foodModel) {
+//        int num = 0;
+//        for (int i = 0; i < listFoodFirst.size(); i++) {
+//            if (listFoodFirst.get(i).getId().equals(foodModel.getId())) {
+//                num = listFoodFirst.get(i).getNumOfFood();
+//            }
+//        }
+//        if (num == 0) {
+//            return true;
+//        }
+//
+//        for (int i = 0; i < foodModelListOrdering.size(); i++) {
+//            if (foodModelListOrdering.get(i).getId().equals(foodModel.getId())) {
+//                if (foodModelListOrdering.get(i).getNumOfFood() < num) {
+//                    return false;
+//                } else {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
 
     @Override
     public void onClickCategory(CategoryModel categoryModel) {
@@ -759,27 +748,27 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
     @Override
     public void onClickFood(FoodModel foodModel) {
         //Đặt thêm món-------------------------------------------
-        if (isChange(foodModel)) {
-            boolean isAdd = true;
-            for (int i = 0; i < listFoodBooked.size(); i++) {
-                if (listFoodBooked.get(i).getId().equals(foodModel.getId())) {
-                    int numOfFood = listFoodBooked.get(i).getNumOfFood();
-                    numOfFood++;
-                    listFoodBooked.get(i).setNumOfFood(numOfFood);
-                    isAdd = false;
-                    break;
-                }
-            }
-
-            if (isAdd) {
-                listFoodBooked.add(new FoodModel(
-                        foodModel.getId(),
-                        foodModel.getName(),
-                        foodModel.getPrice(),
-                        foodModel.getImage(),
-                        1));
-            }
-        }
+//        if (isChange(foodModel)) {
+//            boolean isAdd = true;
+//            for (int i = 0; i < listFoodBooked.size(); i++) {
+//                if (listFoodBooked.get(i).getId().equals(foodModel.getId())) {
+//                    int numOfFood = listFoodBooked.get(i).getNumOfFood();
+//                    numOfFood++;
+//                    listFoodBooked.get(i).setNumOfFood(numOfFood);
+//                    isAdd = false;
+//                    break;
+//                }
+//            }
+//
+//            if (isAdd) {
+//                listFoodBooked.add(new FoodModel(
+//                        foodModel.getId(),
+//                        foodModel.getName(),
+//                        foodModel.getPrice(),
+//                        foodModel.getImage(),
+//                        1));
+//            }
+//        }
         //------------------------------------------------------
 
         int position = foodModelListOrdering.size();
@@ -790,75 +779,76 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
                 foodModelListOrdering.get(i).setNumOfFood(numOfFood);
                 foodOrderingAdapter.notifyItemChanged(i);
                 binding.recycleViewOrderingFood.smoothScrollToPosition(i);
-                if (isAddFood == true) {
-                    setTotalMoney(listFoodBooked);
-                } else {
-                    setTotalMoney(foodModelListOrdering);
-                }
-
+                setTotalMoney(foodModelListOrdering);
+//                if (isAddFood == true) {
+//                    setTotalMoney(listFoodBooked);
+//                } else {
+//                    setTotalMoney(foodModelListOrdering);
+//                }
                 return;
             }
         }
         foodModel.setNumOfFood(1);
         foodModelListOrdering.add(foodModel);
         foodOrderingAdapter.notifyItemInserted(position);
-        if (isAddFood == true) {
-            setTotalMoney(listFoodBooked);
-        } else {
-            setTotalMoney(foodModelListOrdering);
-        }
+        setTotalMoney(foodModelListOrdering);
+//        if (isAddFood == true) {
+//            setTotalMoney(listFoodBooked);
+//        } else {
+//            setTotalMoney(foodModelListOrdering);
+//        }
 
         binding.recycleViewOrderingFood.smoothScrollToPosition(position);
     }
 
     private void changeNumOfFood(String idBooking) throws JSONException {
-        String url = Constant.URL_DEV + "/booking/update-num-of-food-user";
-
-        JSONArray jsonArray = new JSONArray();
-        for (int i = 0; i < listFoodChanged.size(); i++) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("idFood", listFoodChanged.get(i).getId());
-            jsonObject.put("numOfFood", listFoodChanged.get(i).getNumOfFood());
-            jsonArray.put(jsonObject);
-        }
-
-        JSONObject jsonRequest = new JSONObject();
-        jsonRequest.put("idBooking", idBooking);
-        jsonRequest.put("listFoodChange", jsonArray);
-
-        RequestQueue queue = Volley.newRequestQueue(OrderFoodActivity.this);
-
-        JsonObjectRequest sr = new JsonObjectRequest(Request.Method.PUT, url, jsonRequest, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Toast.makeText(OrderFoodActivity.this, "Successful!", Toast.LENGTH_SHORT).show();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Error", error.toString());
-            }
-        }) {
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                headers.put("authorization", "Bearer " + preferenceManager.getString(Constant.TOKEN));
-                return headers;
-            }
-        };
-        sr.setRetryPolicy(new DefaultRetryPolicy(
-                0,
-                -1,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(sr);
+//        String url = Constant.URL_DEV + "/booking/update-num-of-food-user";
+//
+//        JSONArray jsonArray = new JSONArray();
+//        for (int i = 0; i < listFoodChanged.size(); i++) {
+//            JSONObject jsonObject = new JSONObject();
+//            jsonObject.put("idFood", listFoodChanged.get(i).getId());
+//            jsonObject.put("numOfFood", listFoodChanged.get(i).getNumOfFood());
+//            jsonArray.put(jsonObject);
+//        }
+//
+//        JSONObject jsonRequest = new JSONObject();
+//        jsonRequest.put("idBooking", idBooking);
+//        jsonRequest.put("listFoodChange", jsonArray);
+//
+//        RequestQueue queue = Volley.newRequestQueue(OrderFoodActivity.this);
+//
+//        JsonObjectRequest sr = new JsonObjectRequest(Request.Method.PUT, url, jsonRequest, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                Toast.makeText(OrderFoodActivity.this, "Successful!", Toast.LENGTH_SHORT).show();
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d("Error", error.toString());
+//            }
+//        }) {
+//
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<String, String>();
+//                headers.put("Content-Type", "application/json");
+//                headers.put("authorization", preferenceManager.getString(Constant.TOKEN));
+//                return headers;
+//            }
+//        };
+//        sr.setRetryPolicy(new DefaultRetryPolicy(
+//                0,
+//                -1,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//        queue.add(sr);
     }
 
 
     @Override
     public void onRemove(FoodModel foodModel) {
-        listFoodBooked.removeIf(f -> f.getId().equals(foodModel.getId()));
+//        listFoodBooked.removeIf(f -> f.getId().equals(foodModel.getId()));
 
         for (int i = 0; i < foodModelListOrdering.size(); i++) {
             if (foodModelListOrdering.get(i).getId().equals(foodModel.getId())) {
@@ -868,18 +858,19 @@ public class OrderFoodActivity extends AppCompatActivity implements CategoryList
             }
         }
 
-        for (FoodModel foodModel1 : listFoodBooked) {
-            if (foodModel.getId().equals(foodModel1.getId())) {
-                listFoodBooked.remove(foodModel1);
-                break;
-            }
-        }
+//        for (FoodModel foodModel1 : listFoodBooked) {
+//            if (foodModel.getId().equals(foodModel1.getId())) {
+//                listFoodBooked.remove(foodModel1);
+//                break;
+//            }
+//        }
 
-        if (isAddFood == true) {
-            setTotalMoney(listFoodBooked);
-        } else {
-            setTotalMoney(foodModelListOrdering);
-        }
+//        if (isAddFood == true) {
+//            setTotalMoney(listFoodBooked);
+//        } else {
+//            setTotalMoney(foodModelListOrdering);
+//        }
+        setTotalMoney(foodModelListOrdering);
 
 
         Log.d("TotalMoney", "Remove: " + totalMoneyPay);

@@ -80,16 +80,15 @@ public class CheckoutActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String response) {
                 try {
-                    JSONObject jobj = new JSONObject(response);
+//                    if (preferenceManager.getBoolean(Constant.IS_ADD_FOOD)) {
+//                        Log.d("CheckFood", OrderFoodActivity.idBooking + "  "+ OrderFoodActivity.idTable);
+//                       // bookingFood(OrderFoodActivity.listFoodBooked, OrderFoodActivity.idBooking, OrderFoodActivity.idTable);
+//                        deposit(OrderFoodActivity.idBooking, OrderFoodActivity.foodModelListOrdering, OrderFoodActivity.idTable);
 
-                    if (preferenceManager.getBoolean(Constant.IS_ADD_FOOD)) {
-                        Log.d("CheckFood", OrderFoodActivity.idBooking + "  "+ OrderFoodActivity.idTable);
-                       // bookingFood(OrderFoodActivity.listFoodBooked, OrderFoodActivity.idBooking, OrderFoodActivity.idTable);
-                        deposit(OrderFoodActivity.idBooking, OrderFoodActivity.listFoodBooked, OrderFoodActivity.idTable);
-
-                    } else {
-                        bookingAndDeposit();
-                    }
+//                    } else {
+//                        bookingAndDeposit();
+//                    }
+                    bookingAndDeposit();
 
                     Log.d("Success", "Pay success");
                 } catch (JSONException e) {
@@ -118,7 +117,7 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
 
                 try {
-                    bookingFood(foodModelList,idBooking, idTable);
+                    bookingFood(foodModelList, idBooking, idTable);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -136,7 +135,7 @@ public class CheckoutActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("authorization", "Bearer " + preferenceManager.getString(Constant.TOKEN));
+                headers.put("authorization", preferenceManager.getString(Constant.TOKEN));
                 return headers;
             }
         };
@@ -193,7 +192,7 @@ public class CheckoutActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("authorization", "Bearer " + preferenceManager.getString(Constant.TOKEN));
+                headers.put("authorization", preferenceManager.getString(Constant.TOKEN));
                 return headers;
             }
         };
@@ -249,7 +248,7 @@ public class CheckoutActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("authorization", "Bearer " + preferenceManager.getString(Constant.TOKEN));
+                headers.put("authorization", preferenceManager.getString(Constant.TOKEN));
                 return headers;
             }
         };

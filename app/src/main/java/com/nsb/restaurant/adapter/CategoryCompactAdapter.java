@@ -52,13 +52,11 @@ public class CategoryCompactAdapter extends RecyclerView.Adapter<CategoryCompact
             holder.binding.layoutImage.setBackgroundTintList(ColorStateList.valueOf(0x6EAEAD));
         }
         holder.binding.getRoot().setOnClickListener(v -> {
-//            for(int i = 0; i<listSelected.size();i++){
-//                Log.d("Selected", String.valueOf(listSelected.get(position)));
-//            }
             listSelected.set(default_position,false);
             listSelected.set(position, true);
+            notifyItemChanged(position);
+            notifyItemChanged(default_position);
             default_position = position;
-            notifyDataSetChanged();
 
             listener.onClickCategory(categoryModelList.get(position));
         });

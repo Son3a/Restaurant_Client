@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -24,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.nsb.restaurant.activity.user.MainUserActivity;
 import com.nsb.restaurant.databinding.ActivityChangeInfoBinding;
 import com.nsb.restaurant.model.FoodModel;
 import com.nsb.restaurant.util.Constant;
@@ -48,8 +50,7 @@ import java.util.concurrent.Executors;
 
 public class ChangeInfoActivity extends AppCompatActivity {
     private ActivityChangeInfoBinding binding;
-    private String urlImage = "";
-    private String pathImage = "";
+    private String encodeImage;
     private PreferenceManager preferenceManager;
     private boolean isChangeAvatar = false;
 
@@ -95,20 +96,13 @@ public class ChangeInfoActivity extends AppCompatActivity {
 
                     if (!response.getJSONArray("data").getJSONObject(0).getString("HINHANH").trim().equals("")) {
                         binding.textAddImage.setVisibility(View.INVISIBLE);
-                        pathImage = response.getJSONArray("data").getJSONObject(0).getString("HINHANH").trim();
-                        urlImage = response.getJSONArray("data").getJSONObject(0).getString("HINHANH").trim();
-                        Picasso.get().load(response.getJSONArray("data").getJSONObject(0).getString("HINHANH").trim())
-                                .into(binding.imageProfile, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
-                                        binding.pbLoadingImage.setVisibility(View.GONE);
-                                    }
+                        encodeImage = response.getJSONArray("data").getJSONObject(0).getString("HINHANH").trim();
+                        if (!URLUtil.isValidUrl(encodeImage)) {
+                            binding.imageProfile.setImageBitmap(Constant.getBitmapFromEncodedString(encodeImage));
+                        } else {
+                            Picasso.get().load(encodeImage).into(binding.imageProfile);
+                        }
 
-                                    @Override
-                                    public void onError(Exception e) {
-                                        binding.pbLoadingImage.setVisibility(View.GONE);
-                                    }
-                                });
                     }
 
                     binding.pbLoading1.setVisibility(View.GONE);
@@ -131,7 +125,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("authorization", "Bearer " + preferenceManager.getString(Constant.TOKEN));
+                headers.put("authorization", preferenceManager.getString(Constant.TOKEN));
                 return headers;
             }
         };
@@ -152,7 +146,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
         if (binding.inputAddress.getText().toString().equals("") || binding.inputFName.getText().toString().equals("") ||
                 binding.radioGroup.getCheckedRadioButtonId() == -1 || binding.inputLName.getText().toString().equals("") ||
                 binding.inputPhone.getText().toString().equals("") ||
-                pathImage.isEmpty()) {
+                encodeImage.isEmpty()) {
             return true;
         }
         return false;
@@ -164,47 +158,10 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 Toast.makeText(this, "Bạn cần điền đủ thông tin!", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (isChangeAvatar) {
-                uploadImageToCloud(new File(pathImage));
-            }
-            while (urlImage.equals("")) {
-                Log.d("Process", "Waiting upload");
-            }
-
             try {
                 changeInfo();
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
-        });
-    }
-
-    private void uploadImageToCloud(File file) {
-        if (!isChangeAvatar) return;
-        Log.d("Process", "Uploading...");
-        binding.progressBar.setVisibility(View.VISIBLE);
-        binding.buttonConfirm.setVisibility(View.GONE);
-
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                            "cloud_name", "dnstykqpa",
-                            "api_key", "592721243373484",
-                            "api_secret", "II9-bCcD8CkphOGPwwiClJLx7zQ"));
-
-                    Map uploadResult = cloudinary.uploader().upload((file),
-                            ObjectUtils.asMap("public_id", file.getName()));
-                    urlImage = uploadResult.get("url").toString();
-                    pathImage = uploadResult.get("url").toString();
-                    isChangeAvatar = false;
-                    preferenceManager.putString(Constant.AVATAR, urlImage);
-                    Log.d("Process", "Upload successfully");
-                } catch (Exception e) {
-                    Log.d("ErrorUpload", e.getMessage());
-                    e.printStackTrace();
-                }
             }
         });
     }
@@ -226,10 +183,8 @@ public class ChangeInfoActivity extends AppCompatActivity {
                             InputStream inputStream = getContentResolver().openInputStream(imageUri);
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                             binding.imageProfile.setImageBitmap(bitmap);
-                            binding.textAddImage.setVisibility(View.GONE);
-                            pathImage = RealPathUtil.getPath(ChangeInfoActivity.this, imageUri);
-                            isChangeAvatar = true;
-                            //uploadImageToCloud(new File(RealPathUtil.getPath(SignUpActivity.this, imageUri)));
+                            encodeImage = Constant.encodeImage(bitmap);
+                            Log.d("endCode", encodeImage);
                         } catch (FileNotFoundException e) {
                             e.printStackTrace();
                         }
@@ -239,7 +194,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
     );
 
     private void changeInfo() throws JSONException {
-        if (urlImage.equals("")) return;
+        if (encodeImage.equals("")) return;
         Log.d("Process", "Changing...");
         String url = Constant.URL_DEV + "/auth/update-info-user";
         binding.progressBar.setVisibility(View.VISIBLE);
@@ -257,7 +212,7 @@ public class ChangeInfoActivity extends AppCompatActivity {
             jsonObject.put("gender", "Nữ");
         }
 
-        jsonObject.put("avatar", urlImage);
+        jsonObject.put("avatar", encodeImage);
 
         JsonObjectRequest sr = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
             @Override
@@ -266,6 +221,11 @@ public class ChangeInfoActivity extends AppCompatActivity {
                 binding.progressBar.setVisibility(View.GONE);
                 Log.d("Process", "Change successfully!");
                 Toast.makeText(ChangeInfoActivity.this, "Thay đổi thành công!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(ChangeInfoActivity.this, MainUserActivity.class);
+                intent.putExtra(Constant.AVATAR, encodeImage);
+                intent.putExtra(Constant.NAME_USER, binding.inputFName.getText().toString().trim() + binding.inputLName.getText().toString().trim());
+                setResult(RESULT_OK, intent);
+                finish();
             }
         }, new Response.ErrorListener() {
             @Override
@@ -280,7 +240,8 @@ public class ChangeInfoActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("authorization", "Bearer " + preferenceManager.getString(Constant.TOKEN));
+                Log.d("AuthChange",preferenceManager.getString(Constant.TOKEN));
+                headers.put("authorization", preferenceManager.getString(Constant.TOKEN));
                 return headers;
             }
         };

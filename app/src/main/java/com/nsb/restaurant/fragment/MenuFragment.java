@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.nsb.restaurant.activity.admin.AddFoodActivity;
 import com.nsb.restaurant.activity.user.FoodDetailActivity;
+import com.nsb.restaurant.adapter.FoodMenuAdapter;
 import com.nsb.restaurant.adapter.FoodToOrderAdapter;
 import com.nsb.restaurant.adapter.PhotoAdapter;
 import com.nsb.restaurant.databinding.FragmentMenu1Binding;
@@ -47,7 +48,7 @@ import java.util.Map;
 
 public class MenuFragment extends Fragment implements CategoryListener, FoodListener {
     private FragmentMenu1Binding binding;
-    private FoodToOrderAdapter foodAdapter;
+    private FoodMenuAdapter foodAdapter;
     private List<FoodModel> listFoods, listFoodBestSeller;
     private PreferenceManager preferenceManager;
     private LoadingDialog loadingDialog;
@@ -84,7 +85,7 @@ public class MenuFragment extends Fragment implements CategoryListener, FoodList
         preferenceManager = new PreferenceManager(getContext());
         loadingDialog = new LoadingDialog(getContext());
         listFoods = new ArrayList<>();
-        foodAdapter = new FoodToOrderAdapter(listFoods, this);
+        foodAdapter = new FoodMenuAdapter(listFoods, this);
         listFoodBestSeller = new ArrayList<>();
         binding.rcvListFoods.setAdapter(foodAdapter);
     }

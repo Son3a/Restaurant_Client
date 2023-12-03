@@ -184,7 +184,7 @@ public class BookingSuccessActivity extends AppCompatActivity {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
-                headers.put("authorization", "Bearer " + preferenceManager.getString(Constant.TOKEN));
+                headers.put("authorization", preferenceManager.getString(Constant.TOKEN));
                 return headers;
             }
         };

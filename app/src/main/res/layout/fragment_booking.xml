@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Thông tin đặt bàn"
+                android:text="Đặt bàn"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -260,10 +260,10 @@
                 android:layout_below="@id/textNote"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="60dp"
                 android:backgroundTint="@color/primary"
                 android:text="Đặt bàn ngay"
                 android:textColor="@color/white"
-                android:layout_marginBottom="60dp"
                 app:cornerRadius="20dp" />
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>

@@ -6,9 +6,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,6 +36,23 @@ import com.squareup.picasso.Picasso;
 public class AccountFragment extends Fragment {
     private FragmentAccountBinding binding;
     private PreferenceManager preferenceManager;
+    private final int RESULT_OK = -1;
+    private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_OK) {
+                        Intent intent = result.getData();
+                        if (intent.getStringExtra(Constant.AVATAR) != null) {
+                            String avatar = intent.getStringExtra(Constant.AVATAR);
+                            binding.imageAvatar.setImageBitmap(Constant.getBitmapFromEncodedString(avatar));
+                        }
+                        String name = intent.getStringExtra(Constant.NAME_USER);
+                        binding.textName.setText(name);
+                    }
+                }
+            }
+    );
 
     @Nullable
     @Override
@@ -66,7 +88,11 @@ public class AccountFragment extends Fragment {
     private void loading() {
         binding.textName.setText(preferenceManager.getString(Constant.USER_NAME));
         if (preferenceManager.getString(Constant.AVATAR) != null && !preferenceManager.getString(Constant.AVATAR).equals("")) {
-            Picasso.get().load(preferenceManager.getString(Constant.AVATAR)).into(binding.imageAvatar);
+            if (!URLUtil.isValidUrl(preferenceManager.getString(Constant.AVATAR))) {
+                binding.imageAvatar.setImageBitmap(Constant.getBitmapFromEncodedString(preferenceManager.getString(Constant.AVATAR)));
+            } else {
+                Picasso.get().load(preferenceManager.getString(Constant.AVATAR)).into(binding.imageAvatar);
+            }
         }
     }
 
@@ -82,7 +108,8 @@ public class AccountFragment extends Fragment {
 
     private void changeInfo() {
         binding.layoutInfo.setOnClickListener(v -> {
-            startActivity(new Intent(getActivity(), ChangeInfoActivity.class));
+            Intent intent = new Intent(getActivity(), ChangeInfoActivity.class);
+            activityResultLauncher.launch(intent);
         });
     }
 

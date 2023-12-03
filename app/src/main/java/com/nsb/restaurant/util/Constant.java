@@ -3,7 +3,10 @@ package com.nsb.restaurant.util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -15,6 +18,7 @@ import com.nsb.restaurant.R;
 import com.nsb.restaurant.activity.user.MainUserActivity;
 import com.nsb.restaurant.listener.EventKeyboard;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -22,8 +26,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Constant {
-    public static final String URL_DEV = "https://restaurant-server-ba.onrender.com/api/v1";
-    public static final String URL_LOCAL = "http://localhost:5000/api/v1";
+//    public static final String URL_DEV = "https://restaurant-server-ba.onrender.com/api/v1";
+    public static final String URL_DEV = "http://192.168.137.1:5000/api/v1";
     public static final String CLIENT_ID = "AZCGqVmSdvQe2VYD5APynpWfuU2xwBUg0WrNL10suXeeENCgbYI5ea3THozfZISdVENXgVyo6z3SV59B";
     public static final String CLIENT_SECRET = "EGrLhcp6-RDJQzX7FDln8bACmDdm4skzeEu4uptYk0zv1cx6pACNFqIZ3WX3tWboGZpwSgF_qk5yKG2L";
     public static final String WAITING_BOOKING_TABLE = "Chờ duyệt";
@@ -50,6 +54,7 @@ public class Constant {
     public static final String AVATAR = "avatar";
     public static final String IS_BOOKING = "isBooking";
     public static final String FOOD_MODEL = "foodModel";
+    public static final String NAME_USER = "nameUser";
 
     public static String formatSalary(String salary) {
 
@@ -118,5 +123,20 @@ public class Constant {
             MainUserActivity.binding.cvScanQRCode.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.primary_opacity)));
             return false;
         });
+    }
+
+    public static String encodeImage(Bitmap bitmap) {
+        int previewWidth = 150;
+        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
+    public static Bitmap getBitmapFromEncodedString(String encodedImage) {
+        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 }

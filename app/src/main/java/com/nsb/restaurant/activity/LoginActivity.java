@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         super.onCreate(savedInstanceState);
         setContentView(binding.getRoot());
+        preferenceManager = new PreferenceManager(this);
 
         gotoSignUp();
         forgotPassword();
@@ -100,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     preferenceManager.putBoolean(Constant.IS_SIGNED_IN, true);
-                    preferenceManager.putString(Constant.TOKEN, response.getString("token").toString());
+                    preferenceManager.putString(Constant.TOKEN, "Bearer " + response.getString("token").toString());
                     preferenceManager.putString(Constant.EMAIL, response.getJSONArray("data").getJSONObject(0).getString("EMAIL").toString().trim());
                     preferenceManager.putString(Constant.USER_NAME, response.getJSONArray("data").getJSONObject(0).getString("USERNAME").toString().trim());
                     preferenceManager.putString(Constant.PHONE_NUM, response.getJSONArray("data").getJSONObject(0).getString("SDT"));

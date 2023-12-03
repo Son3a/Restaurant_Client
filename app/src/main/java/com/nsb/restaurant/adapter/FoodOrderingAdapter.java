@@ -100,58 +100,59 @@ public class FoodOrderingAdapter extends RecyclerView.Adapter<FoodOrderingAdapte
 
                 //Đặt thêm món----------------------------------------------------------------------
 
-                for (int i = 0; i < OrderFoodActivity.listFoodFirst.size(); i++) {
-                    if (OrderFoodActivity.listFoodFirst.get(i).getId().equals(foodModel.getId()) &&
-                            amount <= OrderFoodActivity.listFoodFirst.get(i).getNumOfFood()) {
-                        if (OrderFoodActivity.isAddFood == true) {
-                            OrderFoodActivity.setTotalMoney(OrderFoodActivity.listFoodBooked);
-                        } else {
-                            OrderFoodActivity.setTotalMoney(OrderFoodActivity.foodModelListOrdering);
-                        }
-                        return;
-                    }
-                }
-                boolean isAdd = true;
-                for (int i = 0; i < OrderFoodActivity.listFoodBooked.size(); i++) {
-                    if (OrderFoodActivity.listFoodBooked.get(i).getId().equals(foodModel.getId())) {
-                        int num = OrderFoodActivity.listFoodBooked.get(i).getNumOfFood();
-                        OrderFoodActivity.listFoodBooked.get(i).setNumOfFood(num += 1);
-                        isAdd = false;
-                        break;
-                    }
-                }
-                if (isAdd) {
-                    OrderFoodActivity.listFoodBooked.add(new FoodModel(
-                            foodModel.getId(),
-                            foodModel.getName(),
-                            foodModel.getPrice(),
-                            foodModel.getImage(),
-                            1));
-                }
+//                for (int i = 0; i < OrderFoodActivity.listFoodFirst.size(); i++) {
+//                    if (OrderFoodActivity.listFoodFirst.get(i).getId().equals(foodModel.getId()) &&
+//                            amount <= OrderFoodActivity.listFoodFirst.get(i).getNumOfFood()) {
+//                        if (OrderFoodActivity.isAddFood == true) {
+//                            OrderFoodActivity.setTotalMoney(OrderFoodActivity.listFoodBooked);
+//                        } else {
+//                            OrderFoodActivity.setTotalMoney(OrderFoodActivity.foodModelListOrdering);
+//                        }
+//                        return;
+//                    }
+//                }
+//                boolean isAdd = true;
+//                for (int i = 0; i < OrderFoodActivity.listFoodBooked.size(); i++) {
+//                    if (OrderFoodActivity.listFoodBooked.get(i).getId().equals(foodModel.getId())) {
+//                        int num = OrderFoodActivity.listFoodBooked.get(i).getNumOfFood();
+//                        OrderFoodActivity.listFoodBooked.get(i).setNumOfFood(num += 1);
+//                        isAdd = false;
+//                        break;
+//                    }
+//                }
+//                if (isAdd) {
+//                    OrderFoodActivity.listFoodBooked.add(new FoodModel(
+//                            foodModel.getId(),
+//                            foodModel.getName(),
+//                            foodModel.getPrice(),
+//                            foodModel.getImage(),
+//                            1));
+//                }
                 //----------------------------------------------------------------------------------
 
-                if (OrderFoodActivity.isAddFood == true) {
-                    OrderFoodActivity.setTotalMoney(OrderFoodActivity.listFoodBooked);
-                } else {
-                    OrderFoodActivity.setTotalMoney(OrderFoodActivity.foodModelListOrdering);
-                }
+//                if (OrderFoodActivity.isAddFood == true) {
+//                    OrderFoodActivity.setTotalMoney(OrderFoodActivity.listFoodBooked);
+//                } else {
+//                    OrderFoodActivity.setTotalMoney(OrderFoodActivity.foodModelListOrdering);
+//                }
+               OrderFoodActivity.setTotalMoney(OrderFoodActivity.foodModelListOrdering);
             });
 
             binding.imageMinus.setOnClickListener(v -> {
                 if (foodModel.getNumOfFood() > 0) {
                     //Đặt thêm món----------------------------------------------------------------------
-                    for (int i = 0; i < OrderFoodActivity.listFoodBooked.size(); i++) {
-                        if (OrderFoodActivity.listFoodBooked.get(i).getId().equals(foodModel.getId())) {
-                            int num = OrderFoodActivity.listFoodBooked.get(i).getNumOfFood();
-                            num -= 1;
-                            if (num == 0) {
-                                OrderFoodActivity.listFoodBooked.remove(i);
-                            } else {
-                                OrderFoodActivity.listFoodBooked.get(i).setNumOfFood(num);
-                            }
-                            break;
-                        }
-                    }
+//                    for (int i = 0; i < OrderFoodActivity.listFoodBooked.size(); i++) {
+//                        if (OrderFoodActivity.listFoodBooked.get(i).getId().equals(foodModel.getId())) {
+//                            int num = OrderFoodActivity.listFoodBooked.get(i).getNumOfFood();
+//                            num -= 1;
+//                            if (num == 0) {
+//                                OrderFoodActivity.listFoodBooked.remove(i);
+//                            } else {
+//                                OrderFoodActivity.listFoodBooked.get(i).setNumOfFood(num);
+//                            }
+//                            break;
+//                        }
+//                    }
                     //----------------------------------------------------------------------------------
 
                     int amount = foodModel.getNumOfFood();
@@ -173,12 +174,12 @@ public class FoodOrderingAdapter extends RecyclerView.Adapter<FoodOrderingAdapte
                         binding.textAmount.setText(String.valueOf(amount));
                         foodModel.setNumOfFood(amount);
                     }
-
-                    if (OrderFoodActivity.isAddFood == true) {
-                        OrderFoodActivity.setTotalMoney(OrderFoodActivity.listFoodBooked);
-                    } else {
-                        OrderFoodActivity.setTotalMoney(OrderFoodActivity.foodModelListOrdering);
-                    }
+                    OrderFoodActivity.setTotalMoney(OrderFoodActivity.foodModelListOrdering);
+//                    if (OrderFoodActivity.isAddFood == true) {
+//                        OrderFoodActivity.setTotalMoney(OrderFoodActivity.listFoodBooked);
+//                    } else {
+//                        OrderFoodActivity.setTotalMoney(OrderFoodActivity.foodModelListOrdering);
+//                    }
                 }
             });
         }
