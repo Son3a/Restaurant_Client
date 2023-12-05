@@ -6,14 +6,17 @@ This is a project of the subject. It is a solution for easy client's reservation
 
 ## Tech Stack
 
-**Client:** Android java
+- Client: Android java
 
-**Server:** Node, SQL Server
+- Server: Node, SQL Server
+
+## Deploy
+- BE: https://restaurant-server-ba.onrender.com/
+- Database SQL Server: Deploy to  <a href="https://somee.com">Somee</a>
 
 ## Download
 
 <p>You can visit to my app by click <a href="https://www.w3schools.com">here</a> to download</p>
-
 
 ## Screenshots
 
