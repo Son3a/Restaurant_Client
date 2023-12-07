@@ -28,4 +28,10 @@
     <color name="black_blur1">#171717</color>
     <color name="background_view">#3A3939</color>
     <color name="blue">#455eec</color>
+
+<!--    test-->
+    <color name="background_main">#E9F2F7</color>
+    <color name="blue_main">#429aff</color>
+    <color name="border">#C6C4C4</color>
+    <color name="green">#354241</color>
 </resources>

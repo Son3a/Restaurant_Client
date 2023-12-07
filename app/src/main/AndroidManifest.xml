@@ -28,6 +28,24 @@
         android:windowSoftInputMode="adjustResize"
         tools:targetApi="31">
         <activity
+            android:name=".activity.user.WebsiteCompanyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.user.IntroduceCompanyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddressCompanyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddressCompanyActivity\"
+            android:exported="false" />
+        <activity
+            android:name=".activity.user.NumEmployerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.NameCompanyActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.LoginActivity"
             android:exported="false">
             <meta-data
